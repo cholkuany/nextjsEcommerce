@@ -1,4 +1,4 @@
-export async function GET(request: Request) {
+export async function GET() {
   const res = await fetch("https://data.mongodb-api.com/...", {
     headers: {
       "Content-Type": "application/json",

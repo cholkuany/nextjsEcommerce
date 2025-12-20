@@ -13,6 +13,8 @@ export async function POST(req: Request) {
     const body = await req.json();
     const parsed = requestSchema.parse(body);
 
+    console.log(parsed);
+
     // You can now safely use `parsed.discount` here
     // e.g., save to database
 
@@ -29,29 +31,3 @@ export async function POST(req: Request) {
   }
 }
 
-// export async function GET() {
-//   await connectToDatabase();
-
-//   const now = new Date();
-//   const discounts = await Discount.find({
-//     isActive: true,
-//     endDate: { $gt: now },
-//   }).sort({ createdAt: -1 });
-
-//   return NextResponse.json(discounts);
-// }
-
-// // models/Discount.ts
-// import mongoose from 'mongoose';
-// import { z } from 'zod';
-// import { discountSchema } from '@/schemas/discountSchema';
-// import { zodToMongoose } from 'zod-to-mongoose';
-
-// const DiscountMongooseSchema = new mongoose.Schema(
-//   zodToMongoose(discountSchema),
-//   { timestamps: true }
-// );
-
-// export const Discount =
-//   mongoose.models.Discount ||
-//   mongoose.model('Discount', DiscountMongooseSchema);
