@@ -7,6 +7,7 @@ import type {
   IVariantOption,
   IVariantDefinition,
   TWeightUnit,
+  TDisplayType
 } from "@/models/modelTypes/product";
 
 // ADVANCED VARIANTS COMPONENT
@@ -30,7 +31,7 @@ export function VariantManagement({
         displayType: "dropdown",
       },
     ]);
-  }, [variantDefs]);
+  }, [onDefs, variantDefs]);
 
   function updateDef(idx: number, patch: Partial<IVariantDefinition>) {
     const defs = [...variantDefs];
@@ -104,7 +105,7 @@ export function VariantManagement({
               className="border p-1 ml-2"
               value={def.displayType || "dropdown"}
               onChange={(e) =>
-                updateDef(idx, { displayType: e.target.value as any })
+                updateDef(idx, { displayType: e.target.value as TDisplayType | undefined })
               }
             >
               <option value="dropdown">Dropdown</option>
@@ -389,10 +390,10 @@ export function VariantManagement({
                   defaultValue={
                     v.availableFrom
                       ? new Date(v.availableFrom).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "numeric",
-                          day: "numeric",
-                        })
+                        year: "numeric",
+                        month: "numeric",
+                        day: "numeric",
+                      })
                       : ""
                   }
                   onChange={(e) =>
