@@ -5,8 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import { signOutAction } from "./signOutAction";
+import { User } from "@/types";
 
-export default function UserDropdown({ user }: { user: any }) {
+export default function UserDropdown({ user }: { user: User }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -30,13 +31,16 @@ export default function UserDropdown({ user }: { user: any }) {
         className="flex items-center focus:outline-none"
       >
         {user?.image ? (
-          <Image
-            src={user.image}
-            alt={user.name || "User avatar"}
-            width={32}
-            height={32}
-            className="rounded-full object-cover"
-          />
+          <div className="flex items-center gap-2 bg-gray-50 p-2 rounded-full">
+            <Image
+              src={user.image}
+              alt={user.name || "User avatar"}
+              width={32}
+              height={32}
+              className="rounded-full object-cover"
+            />
+            <h6 className="capitalize tracking-tight">{user.name}</h6>
+          </div>
         ) : (
           <FaUser size={18} className="text-blue-400" />
         )}
@@ -74,6 +78,24 @@ export default function UserDropdown({ user }: { user: any }) {
               Sign out
             </button>
           </form>
+          {user?.role === "admin" && (
+            <div className="border-t border-gray-200 dark:border-gray-700">
+              <Link
+                href="/admin"
+                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                onClick={() => setOpen(false)}
+              >
+                Admin
+              </Link>
+              <Link
+                href="/"
+                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                onClick={() => setOpen(false)}
+              >
+                Home
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </div>

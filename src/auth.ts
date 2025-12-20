@@ -3,8 +3,7 @@ import NextAuth from "next-auth";
 import dbConnect, { getMongoAdapter } from "@/app/lib/mongodbConnection";
 import { authConfig } from "./auth.config";
 import User from "@/models/user";
-
-type RoleType = "user" | "admin" | undefined;
+import { RoleType } from "./types";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: await getMongoAdapter(),
@@ -15,7 +14,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (user) {
         await dbConnect();
         const dbUser = await User.findById({ _id: user.id });
-        token.role = dbUser?.role ?? "user"; // fallback if undefined
+        token.role = dbUser?.role ?? "user";
       }
       return token;
     },

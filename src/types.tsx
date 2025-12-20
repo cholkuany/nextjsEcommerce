@@ -1,6 +1,9 @@
-import { ProductDocument } from "@/models/product";
-import { CategoryDocument } from "@/models/category";
-import { Types } from "mongoose";
+import { IProduct, IProductImage, IVariantOption } from "@/models/modelTypes/product";
+
+export type Session = {
+  user: User
+  expires: string
+} | null
 
 export type Cat = {
   id: string;
@@ -9,15 +12,19 @@ export type Cat = {
   width: number;
 };
 
+export interface User {
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: RoleType;
+}
+
+export type RoleType = "user" | "admin" | undefined;
+
 export type ImageDetailsProps = {
   url: string;
   height: number;
   width: number;
-};
-
-// The `category` is now the full Category object instead of just ObjectId
-export type PopulatedProduct = ProductDocument & {
-  category: CategoryDocument;
 };
 
 export type FormState = {
@@ -28,7 +35,6 @@ export type FormState = {
     description?: string[];
     inStock?: string[];
     category?: string;
-    // images?: string[];
     images?: File[];
   };
   message: string | null;
@@ -46,6 +52,7 @@ export const ALLOWED_IMAGE_TYPES: string[] = [
   "image/webp",
   "image/jpg",
   "image/heic",
+  "image/avif",
 ];
 export const IMAGE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB in bytes
 
@@ -62,8 +69,6 @@ export type ProductsByCategory = {
     name: string;
     slug: string;
   };
-  // categoryName: "$categoryInfo.name",
-  // categorySlug: "$categoryInfo.slug",
 };
 
 export type ProductType = {
@@ -78,27 +83,51 @@ export type ProductType = {
     id: string;
     name: string;
     slug: string;
+    image?: string;
   };
 };
-
-export type LeanCategory = {
-  _id: Types.ObjectId;
+export type PlainCategoryType = {
+  id: string;
   name: string;
   slug: string;
+  image?: string;
+};
+
+export type TProduct = IProduct<string> & {
+  id: string;
+};
+
+export type TCategory = {
+  _id: string;
+  products: TProduct[];
+};
+
+export type LeanUser = {
+  name: string;
+  email: string;
+  image: string;
+  role: string;
 };
 
 export type CartItem = Pick<
-  ProductType,
-  "id" | "name" | "price" | "images" | "description"
+  TProduct,
+  "id" | "name" | "price" | "baseImage" | "description"
 > & {
   quantity: number;
+  variantSku: string;
+  variantOptions: IVariantOption[];
+  variantPrice: number;
+  variantImages: IProductImage[];
 };
+
+
 
 export type CartContextType = {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
   updateQuantity: (id: string, quantity: number) => void;
   deleteProductFromCart: (productId: string) => void;
+  clearCart: () => void;
 };
 
 export type StripeProduct = {
@@ -107,4 +136,5 @@ export type StripeProduct = {
   description: string;
   quantity: number;
   images?: string[];
+  sku: string;
 };

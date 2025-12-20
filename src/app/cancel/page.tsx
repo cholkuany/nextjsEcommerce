@@ -10,7 +10,7 @@ export default function CancelPage() {
       <h1 className="text-4xl font-bold text-red-700 mb-4">Payment Canceled</h1>
       <p className="text-lg text-red-800 mb-8 text-center max-w-md">
         It looks like you canceled the checkout. No worries — you can always try
-        again whenever you're ready.
+        again whenever you are ready.
       </p>
       <Link
         href="/cart"

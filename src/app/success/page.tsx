@@ -1,9 +1,24 @@
 "use client";
 
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+
+import { useCart } from "../providers/cartContext/context";
 import { FaCheckCircle } from "react-icons/fa";
 import Link from "next/link";
 
 export default function SuccessPage() {
+  const { clearCart } = useCart()
+
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+
+  useEffect(() => {
+    if (sessionId) {
+      clearCart();
+    }
+  }, [sessionId, clearCart])
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-50 px-4">
       <FaCheckCircle className="text-green-500 text-7xl mb-6" />
@@ -18,7 +33,7 @@ export default function SuccessPage() {
         href="/"
         className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
       >
-        Go Back Home
+        Continue shopping
       </Link>
     </div>
   );

@@ -5,6 +5,8 @@ import { CartProvider } from "./providers/cartContext/context";
 import { auth } from "@/auth";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { fetchCategories } from "@/app/lib/data";
+import { Session } from "@/types";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,19 +30,20 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const session = await auth();
+  const session: Session = await auth();
+  const categories = await fetchCategories();
 
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} relative font-sans antialiased px-2 md:px-8 mt-44`}
       >
         <CartProvider>
           {/* 🌐 NAVBAR */}
-          <Header session={session} />
+          <Header session={session} categories={categories} />
 
           {/* 🧱 PAGE CONTENT */}
-          <main className="w-full mx-auto p-0 md:p-6">{children}</main>
+          <main className="w-full mx-auto">{children}</main>
         </CartProvider>
         {/* 🔻 FOOTER */}
         <Footer />

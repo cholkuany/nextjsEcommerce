@@ -8,12 +8,20 @@ import { IoReturnUpBack } from "react-icons/io5";
 
 import { GoPlus } from "react-icons/go";
 import { HiMinus } from "react-icons/hi2";
+import { CartItem } from "@/types";
 
 export default function CartPage() {
   const { cart, addToCart, updateQuantity, deleteProductFromCart } = useCart();
   const [isLoading, setIsLoading] = useState(false);
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const updateProduct = (item: CartItem) => {
+    if (item.quantity - 1 === 0) { deleteProductFromCart(item.id) }
+    else {
+      updateQuantity(item.id, item.quantity - 1);
+    }
+  }
 
   if (!cart || cart.length === 0) {
     return (
@@ -33,6 +41,7 @@ export default function CartPage() {
   const handleCheckout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log("CART>>>", cart);
     try {
       setIsLoading(true);
       const response = await fetch("/api/checkout_sessions", {
@@ -40,16 +49,22 @@ export default function CartPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          items: cart.map((item) => ({
-            name: item.name,
-            price: item.price,
-            description: item.description,
-            quantity: item.quantity,
-            images: item.images,
-          })),
-        }),
+        body: JSON.stringify(
+          {
+            cartItems: cart
+            // items: cart.map((item) => ({
+            //   name: item.name,
+            //   price: item.price,
+            //   description: item.description,
+            //   quantity: item.quantity,
+            //   images: [item.baseImage],
+            //   sku: item.variantSku,
+            //   variantOptions: item.variantOptions,
+            // })),
+          }
+        ),
       });
+
       if (!response.ok) {
         throw new Error("Failed to create checkout session");
       }
@@ -67,33 +82,33 @@ export default function CartPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-2 md:px-4 py-2 md:py-10 rounded-lg">
-      <h1 className="text-4xl font-bold mb-4 md:mb-8 text-gray-800">
+    <div className="max-w-5xl mx-auto px-2 md:px-4 py-8 md:py-10 rounded-lg">
+      <h4 className="text-4xl font-bold mb-4 md:mb-8 text-gray-800">
         Your Cart
-      </h1>
+      </h4>
 
       <div className="space-y-1">
         {cart.map((item) => (
           <div
-            key={item.id}
+            key={item.variantSku}
             className="border-t border-t-gray-100 last:border-b last:border-b-gray-100 flex flex-col justify-between items-start bg-white p-5 transition"
           >
             <div className="flex justify-between w-full space-x-2">
               <Image
-                src={item.images[0]}
+                src={item.baseImage}
                 alt={item.name}
                 width={100}
                 height={100}
                 className="w-24 h-24 object-cover rounded-sm"
               />
               <div className="flex-1">
-                <h2 className="text-sm/6 md:text-xl/6 font-semibold text-gray-800">
+                <h6 className="text-sm/6 md:text-xl/6 font-semibold text-gray-800">
                   {item.name}
-                </h2>
+                </h6>
                 <p className="text-sm text-gray-500">
                   (${item.price.toFixed(2)} x {item.quantity})
                 </p>
-                <p className="text-sm/4">{item.description}</p>
+                {/* <p className="text-sm/4">{item.description}</p> */}
               </div>
               <div className="mt-4 sm:mt-0 text-right">
                 <p className="text-sm md:text-lg font-semibold text-gray-900">
@@ -113,8 +128,7 @@ export default function CartPage() {
 
               <div className="flex items-center space-x-2 p-1 outline outline-gray-600 rounded-full">
                 <button
-                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                  disabled={item.quantity === 1}
+                  onClick={() => updateProduct(item)}
                   className="flex items-center justify-center w-8 h-8 text-white bg-gray-500 hover:bg-gray-600 rounded-full disabled:opacity-40"
                 >
                   <HiMinus />
@@ -143,16 +157,35 @@ export default function CartPage() {
           </p>
           <button
             disabled={isLoading}
-            className="mt-4 inline-block px-6 py-3 bg-green-600 text-white text-lg font-medium rounded-md hover:bg-green-700 transition"
+            className={`mt-4 inline-flex items-center justify-center px-6 py-3 text-lg font-medium rounded-md transition ${isLoading
+              ? "bg-green-500 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700"
+              } text-white`}
             onClick={handleCheckout}
           >
             {isLoading && (
               <svg
-                className="animate-spin mr-3 size-5"
+                className="animate-spin h-5 w-5 mr-2 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
                 viewBox="0 0 24 24"
-              ></svg>
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                ></path>
+              </svg>
             )}
-            Proceed to Checkout
+            {isLoading ? "Redirecting..." : "Proceed to Checkout"}
           </button>
         </div>
       </div>

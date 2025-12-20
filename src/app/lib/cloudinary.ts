@@ -4,7 +4,9 @@ import { v2 as cloudinary } from "cloudinary";
 import dbConnect from "@/app/lib/mongodbConnection";
 
 import Category from "@/models/category";
-import Product from "@/models/product";
+// import Product from "@/models/product";
+import Product from "@/models/modelTypes/product";
+import { IProductImage } from "@/models/modelTypes/product";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!,
@@ -102,18 +104,18 @@ export async function deleteImageByUrl(prev: PrevState, formData: FormData) {
   };
 }
 
-export async function deleteImageWithProduct(imageUrls: string[]) {
+export async function deleteImageWithProduct(images: IProductImage[]) {
   const results = {
     successCount: 0,
     failureCount: 0,
     failedImages: [] as string[],
   };
 
-  for (const url of imageUrls) {
-    const publicIdData = getPublicIdFromUrl(url);
+  for (const img of images) {
+    const publicIdData = getPublicIdFromUrl(img.url);
     if (!publicIdData) {
       results.failureCount++;
-      results.failedImages.push(url);
+      results.failedImages.push(img.url);
       continue; // Skip to next image
     }
 
@@ -125,11 +127,11 @@ export async function deleteImageWithProduct(imageUrls: string[]) {
         results.successCount++;
       } else {
         results.failureCount++;
-        results.failedImages.push(url);
+        results.failedImages.push(img.url);
       }
     } catch (error) {
       results.failureCount++;
-      results.failedImages.push(url);
+      results.failedImages.push(img.url);
     }
   }
 
@@ -162,6 +164,7 @@ async function deleteImageFromCloudinary(
     return { status: "failed" };
   }
 }
+
 async function deleteImageFromDatabase(
   productId: string,
   imageUrl: string
@@ -173,12 +176,26 @@ async function deleteImageFromDatabase(
       console.error("Product not found in Database");
       return { status: "failed" };
     }
-    const newProductImagesURLs = product.images.filter(
-      (img: string) => img !== imageUrl
+    const variant = product.variants.find((v) =>
+      v.images.some((img) => img.url === imageUrl)
     );
-    await Product.findByIdAndUpdate(productId, {
-      images: newProductImagesURLs,
-    });
+    if (!variant) {
+      console.error("Variant with the specified image not found");
+      return { status: "failed" };
+    }
+    // const newProductImagesURLs = product.baseImages.filter(
+    //   (img: IProductImage) => img.url !== imageUrl
+    // );
+    // const newProductImagesURLs =
+
+    await Product.updateOne(
+      { _id: productId, "variants.sku": variant.sku },
+      { $pull: { "variants.$.images": { url: imageUrl } } }
+    );
+
+    // await Product.findByIdAndUpdate(productId, {
+    //   images: newProductImagesURLs,
+    // });
     return { status: "deleted" };
   } catch (error) {
     console.error("Failed to delete image from Database:", error);

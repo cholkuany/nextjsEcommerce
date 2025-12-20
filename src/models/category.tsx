@@ -1,173 +1,143 @@
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
-const { Schema, model, models } = mongoose;
-// import { Schema, model, models, InferSchemaType } from "mongoose";
+// const { Schema, model, models } = mongoose;
 
-const CategorySchema = new Schema(
+// const CategorySchema = new Schema(
+//   {
+//     name: { type: String, unique: true, required: true },
+//     slug: { type: String, unique: true, required: true },
+//     image: { type: String, default: "", required: false },
+//   },
+//   { timestamps: true }
+// );
+
+// // export type CategoryDocument = mongoose.InferSchemaType<typeof CategorySchema>;
+
+// const Category = models.Category || model("Category", CategorySchema);
+
+// export default Category;
+
+// models/Category.ts
+import mongoose, { Schema, Document, models, model } from "mongoose";
+
+export interface ICategoryImage {
+  url: string;
+  alt: string;
+  // type: "thumbnail" | "banner" | "icon";
+}
+
+const CategoryImageSchema = new Schema<ICategoryImage>({
+  url: { type: String, required: true },
+  alt: { type: String, required: true },
+  // type: {
+  //   type: String,
+  //   enum: ["thumbnail", "banner", "icon"],
+  //   default: "thumbnail",
+  // },
+});
+
+// models/Category.model.ts
+
+export interface ICategory {
+  name: string;
+  slug: string;
+  parent: mongoose.Types.ObjectId | null; // Self-referencing parent
+  ancestors: { _id: mongoose.Types.ObjectId; name: string; slug: string }[]; // For easy breadcrumbs
+  description?: string;
+  images?: ICategoryImage[];
+  createdBy?: mongoose.Types.ObjectId;
+  lastModifiedBy?: mongoose.Types.ObjectId;
+  status: "active" | "inactive" | "archived";
+}
+
+export const CategorySchema = new Schema<ICategory>(
   {
-    name: { type: String, unique: true, required: true },
-    slug: { type: String, unique: true, required: true },
+    name: { type: String, required: true },
+    slug: { type: String, required: true, unique: true, lowercase: true },
+    parent: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      default: null, // A null parent means it's a top-level category
+    },
+    // This is an optimization for performance. We store the path to the root.
+    ancestors: [
+      {
+        _id: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+        name: String,
+        slug: String,
+      },
+    ],
+
+    description: {
+      type: String,
+      trim: true,
+      maxlength: 250,
+    },
+
+    // Enhanced media support
+    images: {
+      type: [CategoryImageSchema],
+      default: [],
+    },
+    // Display and organization
+    status: {
+      type: String,
+      enum: ["active", "inactive", "archived"],
+      default: "active",
+    },
+    // Admin
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    lastModifiedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-export type CategoryDocument = mongoose.InferSchemaType<typeof CategorySchema>;
+// Indexes
+// CategorySchema.index({ slug: 1 });
+// CategorySchema.index({ name: "text" });
 
-const Category = models.Category || model("Category", CategorySchema);
+// This is an advanced middleware to automatically update the ancestors path
+CategorySchema.pre("save", async function (next) {
+  if (this.isModified("parent")) {
+    if (this.parent) {
+      const parentCategory = await mongoose
+        .model("Category")
+        .findById(this.parent);
+      if (parentCategory) {
+        this.ancestors = [
+          ...parentCategory.ancestors,
+          {
+            _id: parentCategory._id,
+            name: parentCategory.name,
+            slug: parentCategory.slug,
+          },
+        ];
+      }
+    } else {
+      this.ancestors = [];
+    }
+  }
+  next();
+});
 
+// Virtuals
+CategorySchema.virtual("products", {
+  ref: "Product",
+  localField: "_id",
+  foreignField: "category",
+});
+
+CategorySchema.virtual("primaryImage").get(function () {
+  return this.images?.find((img) => img.url) || this.images?.[0];
+});
+
+const Category =
+  mongoose.models.Category<ICategory> ||
+  model<ICategory>("Category", CategorySchema);
 export default Category;
-
-const allCategories = [
-  {
-    name: "Health & Personal Care",
-    subCategories: [
-      "Vitamins & Supplements",
-      "Skin Care",
-      "Oral Care",
-      "Pain Relief",
-      "Feminine Hygiene",
-    ],
-  },
-
-  {
-    name: "Grocery",
-    subCategories: [
-      "Fresh Produce",
-      "Meat & Seafood",
-      "Snacks & Candy",
-      "Pantry Staples",
-      "Beverages",
-      "Dairy & Eggs",
-      "Frozen Foods",
-    ],
-  },
-
-  {
-    name: "Toys & Games",
-    subCategories: [
-      "Action Figures",
-      "Board Games",
-      "Puzzles",
-      "Dolls & Plush",
-      "Outdoor Play",
-    ],
-  },
-  {
-    name: "Clothing",
-    subCategories: [
-      "Men's Clothing",
-      "Women's Clothing",
-      "Kids & Baby Clothing",
-      "Shoes",
-      "Accessories",
-    ],
-  },
-
-  {
-    name: "Household Essentials",
-    subCategories: [
-      "Cleaning Supplies",
-      "Paper Products",
-      "Laundry Care",
-      "Air Fresheners",
-    ],
-  },
-
-  {
-    name: "Electronics",
-    subCategories: [
-      "Phones & Accessories",
-      "Laptops & Tablets",
-      "TV & Home Theater",
-      "Headphones",
-      "Cameras & Photography",
-    ],
-  },
-
-  {
-    name: "Home & Furniture",
-    subCategories: [
-      "Bedroom Furniture",
-      "Living Room Furniture",
-      "Kitchen & Dining",
-      "Storage & Organization",
-      "Bedding & Linens",
-    ],
-  },
-
-  {
-    name: "Kitchen & Dining",
-    subCategories: [
-      "Cookware",
-      "Small Appliances",
-      "Dinnerware",
-      "Storage Containers",
-    ],
-  },
-
-  {
-    name: "Pets",
-    subCategories: [
-      "Dog Supplies",
-      "Cat Supplies",
-      "Pet Food",
-      "Pet Toys",
-      "Pet Grooming",
-      "Pet Health",
-      "Bird Supplies",
-      "Fish Supplies",
-      "Reptile Supplies",
-    ],
-  },
-
-  {
-    name: "Sports & Fitness",
-    subCategories: ["Exercise Equipment", "Sports Gear", "Outdoor Recreation"],
-  },
-
-  {
-    name: "Beauty",
-    subCategories: ["Makeup", "Hair Care", "Fragrance", "Grooming Tools"],
-  },
-
-  {
-    name: "Books & Media",
-    subCategories: [
-      "Fiction",
-      "Non-fiction",
-      "Children's Books",
-      "Movies & TV",
-      "Music",
-    ],
-  },
-
-  {
-    name: "🧰 Tools & Hardware",
-    subCategories: [
-      "Power Tools",
-      "Hand Tools",
-      "Paint & Supplies",
-      "Home Improvement",
-    ],
-  },
-
-  {
-    name: "🌻 Garden & Outdoor",
-    subCategories: [
-      "Grills & Accessories",
-      "Patio Furniture",
-      "Lawn Care",
-      "Outdoor Décor",
-    ],
-  },
-
-  {
-    name: "👶 Baby",
-    subCategories: [
-      "Diapers & Wipes",
-      "Baby Gear",
-      "Feeding",
-      "Nursery Furniture",
-    ],
-  },
-];

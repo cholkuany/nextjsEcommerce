@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import clsx from "clsx";
 
 interface Breadcrumb {
   label: string;
@@ -22,12 +23,16 @@ export default function Breadcrumbs({
             key={breadcrumb.href}
             aria-current={breadcrumb.active}
             className={
-              breadcrumb.active
-                ? "underline decoration-green-600"
-                : "text-gray-500"
+              breadcrumb.active ? "text-gray-500 pointer-none" : "text-gray-700"
             }
           >
-            <Link href={breadcrumb.href} aria-disabled={breadcrumb.active}>
+            <Link
+              href={breadcrumb.href}
+              aria-disabled={breadcrumb.active}
+              className={clsx("capitalize", {
+                "cursor-not-allowed pointer-events-none": breadcrumb.active,
+              })}
+            >
               {breadcrumb.label}
             </Link>
             {index < breadcrumbs.length - 1 ? (

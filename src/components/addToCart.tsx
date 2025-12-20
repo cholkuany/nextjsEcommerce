@@ -1,29 +1,21 @@
 "use client";
 
-import { GiShoppingCart } from "react-icons/gi";
 import { useCart } from "@/app/providers/cartContext/context";
 import { CartItem } from "@/types";
-import { ProductType } from "@/types";
+import { TProduct } from "@/types";
 
-// type AddToCartProps = {
-//   product: {
-//     id: string;
-//     name: string;
-//     price: number;
-//     quantity: number;
-//     images: string[];
-//     description: string;
-//   };
-// };
-
-export default function AddToCart({ product }: { product: ProductType }) {
+export default function AddToCart({ product }: { product: TProduct }) {
   const cartItem: CartItem = {
     id: product.id,
     name: product.name,
     price: product.price,
+    baseImage: product.baseImage,
     description: product.description,
-    images: product.images,
     quantity: 1,
+    variantSku: product.variants[0].sku,
+    variantOptions: product.variants[0].options,
+    variantPrice: product.variants[0].price,
+    variantImages: product.variants[0].images,
   };
 
   const { addToCart } = useCart();
@@ -36,15 +28,11 @@ export default function AddToCart({ product }: { product: ProductType }) {
 
   return (
     <button
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        addToCart(cartItem);
-      }}
-      className="flex justify-center items-center hover:text-green-300 transition-colors z-20 w-7 h-7 text-white bg-black rounded-full p-1"
+      onClick={handleClick}
+      className="flex justify-center items-center hover:text-green-300 transition-colors z-20 text-white bg-blue-700 rounded-full p-1 w-full"
       title="Add to Cart"
     >
-      <GiShoppingCart className="text-lg sm:text-base w-full h-full" />
+      Add to cart
     </button>
   );
 }

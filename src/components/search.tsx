@@ -10,8 +10,6 @@ export default function Search({ placeholder }: { placeholder: string }) {
   const { replace } = useRouter();
 
   const handleSearch = useDebouncedCallback((term: string) => {
-    console.log("searching...", term);
-
     const currentQuery = searchParams.get("query")?.trim() || "";
     const newQuery = term.trim();
 
@@ -26,13 +24,16 @@ export default function Search({ placeholder }: { placeholder: string }) {
       params.delete("query");
     }
     replace(`${pathname}?${params.toString()}`);
+    // 
   }, 300);
+
   return (
-    <div className="relative flex flex-1 flex-shrink-0">
+    <div className="relative flex max-w-96">
       <label htmlFor="search" className="sr-only">
         Search
       </label>
       <input
+        id="search"
         className="peer outline-0 border border-gray-200 block w-full rounded-md py-[9px] pl-10 text-sm placeholder:text-gray-500 focus:border-blue-700"
         placeholder={placeholder}
         onChange={(e) => {

@@ -66,4 +66,18 @@ export const authConfig = {
     signIn: "/signin",
   },
   providers: providers,
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role; // from DB
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token?.role && session.user) {
+        session.user.role = token.role as "user" | "admin" | undefined;
+      }
+      return session;
+    },
+  },
 } satisfies NextAuthConfig;

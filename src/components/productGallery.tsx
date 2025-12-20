@@ -1,80 +1,118 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import { TProduct } from "@/types";
 import ProductCard from "./productCard";
-
-import { PlainCategoryType } from "@/app/lib/data";
-import { ProductType } from "@/types";
 
 export default function ProductGallery({
   products,
-  categories,
 }: {
-  products: ProductType[];
-  categories: PlainCategoryType[];
+  products: TProduct[];
 }) {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
-  const defaultCategory = searchParams.get("category") || "all";
-  const [selectedCategory, setSelectedCategory] = useState(defaultCategory);
+  const category = searchParams.get("category");
+  const query = searchParams.get("query");
+  const sort = searchParams.get("sort");
 
-  useEffect(() => {
-    setSelectedCategory(defaultCategory);
-  }, [defaultCategory]);
-
-  const handleCategoryChange = (value: string) => {
-    const newParams = new URLSearchParams(searchParams.toString());
-    if (value === "all") {
-      newParams.delete("category");
-    } else {
-      newParams.set("category", value);
+  console.log(products[0].categoryPath)
+  console.log(products[0].categoryName)
+  /**
+   * 🔹 Main filtered list (for the grid)
+   */
+  const filteredProducts = useMemo(() => {
+    let result = products;
+    if (category) {
+      result = result.filter(
+        (p) => p.categoryPath === category
+      );
     }
-    router.push(`?${newParams.toString()}`);
-  };
 
-  const filteredProducts =
-    selectedCategory === "all"
-      ? products
-      : products.filter((p) => p.category.name === selectedCategory);
+    if (query) {
+      const q = query.toLowerCase();
+      result = result.filter(
+        (p) =>
+          p.name?.toLowerCase().includes(q) ||
+          p.categoryPath?.toLowerCase().includes(q)
+      );
+    }
+
+    // Only copy if sorting (because sort mutates)
+    if (sort) {
+      result = [...result].sort((a, b) => {
+        switch (sort) {
+          case "price-asc":
+            return a.price - b.price;
+          case "price-desc":
+            return b.price - a.price;
+          default:
+            return 0;
+        }
+      });
+    }
+
+    return result;
+  }, [products, category, query, sort]);
+
+  /**
+   * 🔹 Home page sections (GLOBAL, not filtered)
+   */
+  const onSales = useMemo(
+    () => products.filter((p) => p.discount?.isActive),
+    [products]
+  );
+
+  const bestsellers = useMemo(
+    () => products.filter((p) => p.isBestseller),
+    [products]
+  );
 
   return (
-    <div className="flex flex-col items-start">
-      {/* Filter Dropdown */}
-      <div className="mb-6">
-        <label htmlFor="category" className="mr-2 font-semibold">
-          Filter by Category:
-        </label>
-        <select
-          id="category"
-          value={selectedCategory}
-          onChange={(e) => handleCategoryChange(e.target.value)}
-          className="border px-3 py-2 rounded-md shadow-sm"
-        >
-          <option value="all">All</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.name}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
-      </div>
+    <div className="flex flex-col gap-20 w-full">
 
-      {/* Product Grid */}
-      <div className="w-full flex flex-wrap items-center justify-center gap-4 mx-auto">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))
-        ) : (
-          <div className="h-[35vh] flex items-center justify-center">
-            <p className="col-span-full text-center text-3xl md:text-5xl text-gray-700">
-              No products found for this category.
-            </p>
-          </div>
-        )}
-      </div>
+      {/* 🟦 MAIN GRID (filtered) */}
+      <Section title={category ? category : "All products"} products={filteredProducts} />
+      {/* 🟢 HOME PAGE HIGHLIGHTS */}
+      {onSales.length > 0 && (
+        <Section title="On sales" products={onSales} />
+      )}
+
+      {bestsellers.length > 0 && (
+        <Section title="Popular products" products={bestsellers} />
+      )}
+
     </div>
   );
 }
+
+export function Section({
+  title,
+  products,
+}: {
+  title: string;
+  products: TProduct[];
+}) {
+  return (
+    <section className="w-full mt-12">
+      <h2 className="text-3xl md:text-4xl font-extrabold text-left mb-8">
+        {title}
+      </h2>
+
+      {products.length > 0 ? (
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+          {products.map((product) => (
+            <div key={product.id} className="shrink-0">
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-left text-xl text-gray-500">
+          No products found.
+        </p>
+      )}
+    </section>
+  );
+}
+

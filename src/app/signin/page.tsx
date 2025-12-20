@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { signInWithProvider } from "./authAction";
 import { providerMap } from "@/auth.config";
@@ -28,19 +29,26 @@ export default function SignInPage() {
       : null;
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-md p-8 space-y-6">
-        {/* Logo / Branding */}
+    <div className="min-h-[60vh] flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.05)] p-8 space-y-6">
+        {/* Logo and Branding */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Welcome to <span className="text-blue-600">ShopMate</span>
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">
-            Sign in to your account
+          <div className="mx-auto mb-4 flex justify-center rounded-full">
+            <Image
+              src="/logo.png"
+              alt="ShopMate Logo"
+              width={124}
+              height={124}
+              priority
+              className="h-32 w-32 rounded-full"
+            />
+          </div>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
+            Sign in to continue
           </p>
         </div>
 
-        {/* Error */}
+        {/* Error Message */}
         {errorMessage && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-sm">
             <p>{errorMessage}</p>
@@ -58,7 +66,7 @@ export default function SignInPage() {
               >
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 transition"
+                  className="w-60 mx-auto flex items-center justify-center gap-3 px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-800 hover:bg-gray-200 transition-all duration-300"
                 >
                   {Icon && <Icon size={20} />}
                   <span className="text-sm font-medium">
@@ -68,13 +76,6 @@ export default function SignInPage() {
               </form>
             );
           })}
-        </div>
-
-        {/* Optional: Divider */}
-        <div className="relative text-center mt-4">
-          <span className="text-xs text-gray-400">
-            More sign-in options coming soon
-          </span>
         </div>
       </div>
     </div>

@@ -1,0 +1,532 @@
+[
+  {
+    "name": "Tropical Gold Pineapple",
+    "slug": "tropical-gold-pineapple",
+    "description": "Tropical Gold Pineapples are known for their vibrant golden flesh, natural sweetness, and low acidity. Juicy and refreshing, this tropical fruit is perfect for snacking, blending into smoothies, or adding a burst of flavor to your favorite dishes. Harvested at peak ripeness for maximum taste.",
+    "price": 3.97,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1748041658/products/sywfwrmtt6vbbfezqvtm.jpg"
+    ],
+    "inStock": 6,
+    "category": {
+      "id": "6826a19db1641707872f9da5",
+      "name": "Fruits",
+      "slug": "fruits",
+      "image": ""
+    },
+    "id": "67fee021e61e82b116923158"
+  },
+  {
+    "name": "Hardneck Garlic Bulbs",
+    "slug": "hardneck-garlic-bulbs",
+    "description": "Hardneck garlic offers a bold, complex flavor that’s prized by chefs and home cooks alike. With its easy-to-peel cloves and rich aroma, it’s ideal for roasting, sautéing, or adding depth to sauces and marinades. Grown in cooler climates, this variety also produces edible garlic scapes in the spring.",
+    "price": 2.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1744757361/products/cx7dxm1alyb62ekvcof3.jpg"
+    ],
+    "inStock": 8,
+    "category": {
+      "id": "6826a19db1641707872f9da5",
+      "name": "Fruits",
+      "slug": "fruits",
+      "image": ""
+    },
+    "id": "67fee275e61e82b116923165"
+  },
+  {
+    "name": "Sweet corn",
+    "slug": "sweet_corn",
+    "description": "Sweet and delicious Ontario corn",
+    "price": 1.95,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1748106525/products/b3xxypyaarxzhd989ihg.jpg"
+    ],
+    "inStock": 30,
+    "category": {
+      "id": "6826a19db1641707872f9da5",
+      "name": "Fruits",
+      "slug": "fruits",
+      "image": ""
+    },
+    "id": "680e6e2ad6cd205756ad69e5"
+  },
+  {
+    "name": "Black motorcycle",
+    "slug": "black_motorcycle",
+    "description": "A cheap, reliable motorcycle for sale.",
+    "price": 2,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1745901865/products/olagbujfsam0z2e2r6nu.jpg"
+    ],
+    "inStock": 5000,
+    "category": {
+      "id": "67fed46c06df5d1664fa4540",
+      "name": "Health & Personal Care",
+      "slug": "health_&_personal_care",
+      "image": ""
+    },
+    "id": "6810592dc6ef1dcb1b8d0174"
+  },
+  {
+    "name": "Red and green apples.",
+    "slug": "red_and_green_apples",
+    "description": "Sweet and delicious Ontario apples",
+    "price": 1.95,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1746766519/products/clnuktxmrkeu9hkf2xt5.jpg"
+    ],
+    "inStock": 80,
+    "category": {
+      "id": "67fed46c06df5d1664fa4540",
+      "name": "Health & Personal Care",
+      "slug": "health_&_personal_care",
+      "image": ""
+    },
+    "id": "681d8ab77ac124686ec41271"
+  },
+  {
+    "name": "Strawberries",
+    "slug": "strawberries",
+    "description": "Sweet and high quality strawberries",
+    "price": 4.95,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1746767984/products/hcf0sem06n8urpzpd6bo.jpg"
+    ],
+    "inStock": 40,
+    "category": {
+      "id": "67fed46c06df5d1664fa4540",
+      "name": "Health & Personal Care",
+      "slug": "health_&_personal_care",
+      "image": ""
+    },
+    "id": "681d9070d7aa64ea34b6db37"
+  },
+  {
+    "name": "Black Grapes",
+    "slug": "black-grapes",
+    "description": "Sweet and juicy black grapes with a rich flavor, perfect for snacking or adding to fruit salads. Naturally high in antioxidants.",
+    "price": 4.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747344923/products/euok1ud4tgayvqqpzgiw.jpg"
+    ],
+    "inStock": 120,
+    "category": {
+      "id": "6826a19db1641707872f9da5",
+      "name": "Fruits",
+      "slug": "fruits",
+      "image": ""
+    },
+    "id": "68265e1c199a6a46f4be772c"
+  },
+  {
+    "name": "Stripetti Squash",
+    "slug": "stripetti-squash",
+    "description": "Stripetti squash is a hybrid of delicata and spaghetti squash. It has a mildly sweet flavor and stringy flesh perfect for baking or roasting. Great as a low-carb pasta substitute.",
+    "price": 3.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747361458/products/sdyotvjdhcszfakhzlmq.jpg"
+    ],
+    "inStock": 41,
+    "category": {
+      "id": "67fd7a47b4f3805e4697b2fe",
+      "name": "Meats & deli",
+      "slug": "meats-deli",
+      "image": ""
+    },
+    "id": "68269eb2199a6a46f4be77f6"
+  },
+  {
+    "name": "Banana",
+    "slug": "banana",
+    "description": "A sweet, creamy fruit that's high in potassium and perfect for snacking, smoothies, or baking. Naturally fat-free and rich in nutrients.",
+    "price": 0.22,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747361763/products/x6jzt1phm5jowzlbktaz.jpg"
+    ],
+    "inStock": 150,
+    "category": {
+      "id": "6826a19db1641707872f9da5",
+      "name": "Fruits",
+      "slug": "fruits",
+      "image": ""
+    },
+    "id": "68269fe3199a6a46f4be780c"
+  },
+  {
+    "name": "Stewed Prunes",
+    "slug": "stewed-prunes",
+    "description": "Tender prunes slowly simmered until soft and flavorful. A naturally sweet treat rich in fiber and antioxidants, commonly enjoyed as a breakfast side or dessert topping.",
+    "price": 2.95,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747361967/products/glr3tl0nkpl5thvguvre.jpg"
+    ],
+    "inStock": 13,
+    "category": {
+      "id": "6826a19db1641707872f9da5",
+      "name": "Fruits",
+      "slug": "fruits",
+      "image": ""
+    },
+    "id": "6826a0af199a6a46f4be7813"
+  },
+  {
+    "name": "Strawberries",
+    "slug": "strawberry",
+    "description": "Fresh, juicy strawberries with a sweet and slightly tart flavor. Perfect for snacking, baking, or adding to salads and desserts. Packed with vitamin C and antioxidants.",
+    "price": 3.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747362712/products/ipzvoxqchycougqyjp04.jpg"
+    ],
+    "inStock": 27,
+    "category": {
+      "id": "6826a19db1641707872f9da5",
+      "name": "Fruits",
+      "slug": "fruits",
+      "image": ""
+    },
+    "id": "6826a399199a6a46f4be7823"
+  },
+  {
+    "name": "Dell Gaming OptiPlex Desktop Computer PC",
+    "slug": "dell-gaming-optiplex-desktop-pc",
+    "description": "This Dell Gaming OptiPlex Desktop Computer PC is equipped with a powerful Intel Core i7 processor and an AMD RX 550 4GB GDDR5 graphics card, making it ideal for gaming and multitasking. It includes 16GB of RAM, a 1TB SSD for fast storage, and comes bundled with a 24 Inch HDMI Monitor. Additional accessories include an RGB Keyboard, Mouse, Headset, Speaker, and LED Light Bar. Enjoy seamless connectivity with built-in WiFi and Windows 10 Pro pre-installed.",
+    "price": 799.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747600420/products/v66xw9p6jdlnzakcqd94.webp"
+    ],
+    "inStock": 9,
+    "category": {
+      "id": "682a43209a10a71e1d3f349f",
+      "name": "Electronics",
+      "slug": "electronics",
+      "image": ""
+    },
+    "id": "682a44245294d9774e4affa9"
+  },
+  {
+    "name": "ViprTech Overlord Liquid-Cooled Gaming PC",
+    "slug": "viprtech-overlord-liquid-cooled-gaming-pc",
+    "description": "The ViprTech Overlord Liquid-Cooled Gaming PC is a high-performance desktop built for gaming and multitasking. Powered by an AMD Ryzen 7 5700X processor with speeds up to 4.6GHz and paired with an NVIDIA RTX 4060 Ti 8GB graphics card, this rig is VR-ready and capable of handling demanding games and applications. It features 32GB of DDR4 RAM, a fast 1TB SSD, integrated WiFi and Bluetooth, and runs Windows 11. The liquid cooling system ensures efficient thermal performance for extended gaming sessions.",
+    "price": 1500,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747600539/products/scrfu9sgderasm70eufz.webp"
+    ],
+    "inStock": 10,
+    "category": {
+      "id": "682a43209a10a71e1d3f349f",
+      "name": "Electronics",
+      "slug": "electronics",
+      "image": ""
+    },
+    "id": "682a449b5294d9774e4affb0"
+  },
+  {
+    "name": "Vinsetto Filing Cabinet with 2 Drawers and Lock - Rustic Brown",
+    "slug": "vinsetto-filing-cabinet-2-drawers-lock-rustic-brown",
+    "description": "The Vinsetto Filing Cabinet features a rustic brown finish and a compact design perfect for home or office use. It includes two spacious drawers to organize letter-size or legal-size documents. The top drawer includes a lock to keep sensitive files secure. Built from durable materials, this cabinet offers both function and style for your workspace.",
+    "price": 199.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747601180/products/ane5qumuvqourwdkhxqe.webp"
+    ],
+    "inStock": 3,
+    "category": {
+      "id": "682a468d9a10a71e1d3f34a0",
+      "name": "Furniture",
+      "slug": "furniture",
+      "image": ""
+    },
+    "id": "682a471c5294d9774e4affb8"
+  },
+  {
+    "name": "Mainstays Sumpter Park Cube Storage Desk",
+    "slug": "mainstays-sumpter-park-cube-storage-desk",
+    "description": "The Mainstays Sumpter Park Cube Storage Desk combines functionality with modern style, offering a compact workspace with built-in cube storage for organization. Its clean design fits easily into small spaces, making it ideal for home offices, student dorms, or study nooks. Made with durable materials and a sleek finish, this desk helps keep your work essentials neat and accessible.",
+    "price": 49.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747603829/products/z0zt53zfpkmkovhs5nxw.webp"
+    ],
+    "inStock": 2,
+    "category": {
+      "id": "682a468d9a10a71e1d3f34a0",
+      "name": "Furniture",
+      "slug": "furniture",
+      "image": ""
+    },
+    "id": "682a51755294d9774e4afff7"
+  },
+  {
+    "name": "Large White Eggs - 18 Count",
+    "slug": "large-white-eggs-18-count",
+    "description": "This pack of 18 Large White Eggs offers a fresh and nutritious option for your daily meals. Perfect for breakfast, baking, or cooking, these Grade A eggs are a versatile kitchen staple. Carefully packaged to ensure safety and freshness.",
+    "price": 6.49,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747604916/products/y0wepjn52sjtybda2xz2.jpg"
+    ],
+    "inStock": 19,
+    "category": {
+      "id": "682a53e39a10a71e1d3f34a3",
+      "name": "Dairy & Eggs",
+      "slug": "dairy_&_eggs",
+      "image": ""
+    },
+    "id": "682a55b55294d9774e4b001a"
+  },
+  {
+    "name": "Natrel 2% Organic Milk, Fine-Filtered",
+    "slug": "natrel-2-percent-organic-milk-fine-filtered",
+    "description": "Natrel 2% Organic Milk is fine-filtered for a pure, clean taste and longer freshness. Sourced from certified organic Canadian farms, this milk contains no antibiotics, synthetic growth hormones, or pesticides. It's a natural source of calcium and protein, perfect for daily use in coffee, cereal, or on its own.",
+    "price": 8.49,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747605146/products/jpvbuhkd9k70pj8c4rzt.jpg"
+    ],
+    "inStock": 21,
+    "category": {
+      "id": "682a53e39a10a71e1d3f34a3",
+      "name": "Dairy & Eggs",
+      "slug": "dairy_&_eggs",
+      "image": ""
+    },
+    "id": "682a569b5294d9774e4b0021"
+  },
+  {
+    "name": "Lactantia 2% Partly Skimmed Milk, PurFiltre",
+    "slug": "lactantia-2-percent-partly-skimmed-milk-purfiltre",
+    "description": "Lactantia 2% Partly Skimmed Milk with PurFiltre technology offers a fresh, clean taste and extended shelf life. Made with high-quality Canadian milk, it's an excellent source of calcium and vitamin D. Perfect for daily use in coffee, cereal, recipes, or by the glass.",
+    "price": 4.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747605334/products/rswpjybwpytrngrp31lf.jpg"
+    ],
+    "inStock": 7,
+    "category": {
+      "id": "682a53e39a10a71e1d3f34a3",
+      "name": "Dairy & Eggs",
+      "slug": "dairy_&_eggs",
+      "image": ""
+    },
+    "id": "682a57565294d9774e4b0028"
+  },
+  {
+    "name": "Natrel 3.25% Milk, Fine-Filtered",
+    "slug": "natrel-3-25-percent-milk-fine-filtered",
+    "description": "Natrel 3.25% Milk is fine-filtered for purity and freshness. With a rich, creamy texture, this whole milk is a great source of calcium, protein, and vitamin D. Made with 100% Canadian milk and no antibiotics or artificial growth hormones, it’s perfect for drinking, cooking, or baking.",
+    "price": 6.45,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747605575/products/rqa9akisiaqrs0ztocrv.jpg"
+    ],
+    "inStock": 4,
+    "category": {
+      "id": "682a53e39a10a71e1d3f34a3",
+      "name": "Dairy & Eggs",
+      "slug": "dairy_&_eggs",
+      "image": ""
+    },
+    "id": "682a58475294d9774e4b002f"
+  },
+  {
+    "name": "Apples - Golden Delicious",
+    "slug": "apples-golden-delicious",
+    "description": "Golden Delicious apples are crisp, juicy, and subtly sweet with a light greenish-yellow skin. Perfect for snacking, baking, or adding to salads, these apples are known for their smooth texture and balanced flavor. A healthy source of fiber and vitamin C.",
+    "price": 5,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747619072/products/fm1xgmnp51uiw8aue0lx.jpg"
+    ],
+    "inStock": 9,
+    "category": {
+      "id": "6826a19db1641707872f9da5",
+      "name": "Fruits",
+      "slug": "fruits",
+      "image": ""
+    },
+    "id": "682a8d015294d9774e4b006a"
+  },
+  {
+    "name": "Black Seedless Grapes",
+    "slug": "black-seedless-grapes",
+    "description": "Black Seedless Grapes are sweet, juicy, and packed with antioxidants. Their deep color and crisp texture make them perfect for snacking, fruit salads, or cheese platters. These grapes are naturally seedless and offer a refreshing burst of flavor in every bite.",
+    "price": 3.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747619205/products/saxkac27fak8rlripqla.jpg"
+    ],
+    "inStock": 5,
+    "category": {
+      "id": "6826a19db1641707872f9da5",
+      "name": "Fruits",
+      "slug": "fruits",
+      "image": ""
+    },
+    "id": "682a8d865294d9774e4b0071"
+  },
+  {
+    "name": "Apple, Ambrosia",
+    "slug": "apple-ambrosia",
+    "description": "Ambrosia apples are known for their honey-sweet flavor, low acidity, and crisp, juicy texture. With a beautiful red and yellow skin, these apples are perfect for snacking, baking, or adding to salads. A naturally non-browning variety, ideal for fresh cuts.",
+    "price": 0.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747619368/products/m2rejdacyleccfudqoda.jpg"
+    ],
+    "inStock": 60,
+    "category": {
+      "id": "6826a19db1641707872f9da5",
+      "name": "Fruits",
+      "slug": "fruits",
+      "image": ""
+    },
+    "id": "682a8e285294d9774e4b0078"
+  },
+  {
+    "name": "Space Solutions Teal Breeze 2-Drawer Steel File Cabinet - 18",
+    "slug": "space-solutions-teal-breeze-file-cabinet-2-drawer",
+    "description": "Bring a pop of color and smart storage to your workspace with the Space Solutions Teal Breeze File Cabinet. This 18-inch compact steel cabinet features two smooth-glide drawers for letter-size documents and a sleek teal finish that brightens any office or home corner. Its durable metal build and space-saving design make it a stylish and functional organization essential.",
+    "price": 79.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747620558/products/s8jiusqsidap0i4ht52e.webp"
+    ],
+    "inStock": 20,
+    "category": {
+      "id": "682a468d9a10a71e1d3f34a0",
+      "name": "Furniture",
+      "slug": "furniture",
+      "image": ""
+    },
+    "id": "682a92cf5294d9774e4b0098"
+  },
+  {
+    "name": "McCafé Signature Roast Ground Coffee – Medium Dark, 875g",
+    "slug": "mccafe-signature-roast-ground-coffee-medium-dark-875g",
+    "description": "Wake up to café-quality flavor at home with McCafé’s Signature Roast. This premium medium dark ground coffee delivers a rich, balanced taste with smooth, full-bodied notes. Expertly roasted and made from 100% Arabica beans, it’s perfect for drip machines, pour-overs, and morning rituals. Resealable 875g bag keeps freshness locked in.",
+    "price": 26.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747622006/products/oj214nwiyrsdksomguyk.webp"
+    ],
+    "inStock": 13,
+    "category": {
+      "id": "682a978e9a10a71e1d3f34a4",
+      "name": "Groceries",
+      "slug": "groceries",
+      "image": ""
+    },
+    "id": "682a98775294d9774e4b00a3"
+  },
+  {
+    "name": "NESCAFÉ Rich Hazelnut Instant Coffee – 100g Jar",
+    "slug": "nescafe-rich-hazelnut-instant-coffee-100g",
+    "description": "Enjoy a delicious twist on your coffee break with NESCAFÉ Rich Hazelnut Instant Coffee. This aromatic blend brings together the bold flavor of NESCAFÉ’s classic roast with a smooth hazelnut essence. Perfect for busy mornings or cozy afternoons—just add hot water for a flavorful cup in seconds. Comes in a convenient 100g jar.",
+    "price": 6.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1747622118/products/octnstnhvvij7aqkcv8l.webp"
+    ],
+    "inStock": 17,
+    "category": {
+      "id": "682a978e9a10a71e1d3f34a4",
+      "name": "Groceries",
+      "slug": "groceries",
+      "image": ""
+    },
+    "id": "682a98e75294d9774e4b00aa"
+  },
+  {
+    "name": "Beats Studio Pro Wireless Headphones",
+    "slug": "beats-studio-pro-wireless-headphones",
+    "description": "Engineered to keep you immersed in the music, Beats Studio Pro Wireless Headphones deliver exceptional sound quality with fully adaptive Active Noise Cancelling (ANC) and personalized spatial audio. With premium comfort, up to 40 hours of battery life, and seamless Bluetooth connectivity, they’re perfect for studio sessions, daily commutes, and everything in between.",
+    "price": 449.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1748123143/products/djiweh7ezpbzrohckydi.jpg",
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1748121825/products/cplvjjisdahgffpy13nh.webp"
+    ],
+    "inStock": 24,
+    "category": {
+      "id": "682a43209a10a71e1d3f349f",
+      "name": "Electronics",
+      "slug": "electronics",
+      "image": ""
+    },
+    "id": "683238e1729aa95145f4f155"
+  },
+  {
+    "name": "Beats Solo Buds – True Wireless Earbuds",
+    "slug": "beats-solo-buds-true-wireless-earbuds",
+    "description": "Compact, powerful, and designed for all-day comfort, Beats Solo Buds deliver immersive sound in a sleek true wireless design. With up to 18 hours of battery life, Class 1 Bluetooth for extended range, and a built-in microphone, they’re compatible with both Apple and Android devices—perfect for music, calls, and everything in between.",
+    "price": 99.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1748124054/products/kweizg6sziugb8bitlcj.webp"
+    ],
+    "inStock": 45,
+    "category": {
+      "id": "682a43209a10a71e1d3f349f",
+      "name": "Electronics",
+      "slug": "electronics",
+      "image": ""
+    },
+    "id": "683241975e2cd72c6d0f1e4b"
+  },
+  {
+    "name": "Mini 2025 Multifunctional Tool Card – Outdoor EDC Essential",
+    "slug": "mini-multifunctional-tool-card-2025",
+    "description": "Be ready for anything with the Mini 2025 Multifunctional Tool Card. This compact, credit card-sized gadget packs a wrench, bottle opener, screwdriver, ruler, and more into one lightweight stainless steel design. Perfect for everyday carry (EDC), camping, hiking, or quick fixes on the go.",
+    "price": 3.49,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1748202423/products/vwp0ca5ywnbi8of4abme.webp",
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1748202424/products/loxjk9y3ohsnqbbllbpi.webp"
+    ],
+    "inStock": 3,
+    "category": {
+      "id": "682a531b9a10a71e1d3f34a2",
+      "name": "Tools & Hardware",
+      "slug": "tools_&_hardware",
+      "image": ""
+    },
+    "id": "683373b893c5ef918e0e89e9"
+  },
+  {
+    "name": "Fresh Sea Bass Fillet",
+    "slug": "fresh-sea-bass-fillet",
+    "description": "Delicately flavored and perfectly tender, our Fresh Sea Bass Fillet is ideal for pan-searing, grilling, or baking. Sustainably sourced and expertly filleted, this premium white fish offers a mild, buttery taste and flaky texture that pairs beautifully with herbs, citrus, or a light sauce.",
+    "price": 5.99,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1748204194/products/plte9lmn2ah88a9nln2h.jpg"
+    ],
+    "inStock": 14,
+    "category": {
+      "id": "67fd7a47b4f3805e4697b2fe",
+      "name": "Meats & deli",
+      "slug": "meats-deli",
+      "image": ""
+    },
+    "id": "68337aa293c5ef918e0e8a34"
+  },
+  {
+    "name": "Lean Ground Beef – Value Pack",
+    "slug": "lean-ground-beef-value-pack",
+    "description": "Perfect for family meals and weekly meal prep, our Lean Ground Beef Value Pack offers quality and quantity in one convenient package. With just the right balance of flavor and reduced fat content, it’s ideal for burgers, tacos, meatloaf, and more. Freshly ground and ready to cook.",
+    "price": 12.98,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1748416440/products/mhvb2goaffkqufrshgay.jpg"
+    ],
+    "inStock": 32,
+    "category": {
+      "id": "67fd7a47b4f3805e4697b2fe",
+      "name": "Meats & deli",
+      "slug": "meats-deli",
+      "image": ""
+    },
+    "id": "6836b7b8dac80834c8ffdd69"
+  },
+  {
+    "name": "Your Fresh Market Yellow Onions – 3 lb Bag",
+    "slug": "your-fresh-market-yellow-onions-3lb-bag",
+    "description": "Your Fresh Market Yellow Onions come in a convenient 3 lb bag, perfect for everyday cooking. Known for their robust flavor and versatility, yellow onions are a pantry essential—ideal for soups, stir-fries, roasts, and more. Long-lasting and full of savory depth, these onions are a kitchen staple.",
+    "price": 2.97,
+    "images": [
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1750390944/products/dkql8egeh6wkyopfbljk.jpg",
+      "https://res.cloudinary.com/dznpxlilv/image/upload/v1750390944/products/o05uot7cnrzpmokld8qu.jpg"
+    ],
+    "inStock": 6,
+    "category": {
+      "id": "682a978e9a10a71e1d3f34a4",
+      "name": "Groceries",
+      "slug": "groceries",
+      "image": ""
+    },
+    "id": "6854d8a1e2eb806265a38ba9"
+  }
+]

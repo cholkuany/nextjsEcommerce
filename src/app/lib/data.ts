@@ -1,111 +1,100 @@
 "use server";
 
-import Product from "@/models/product";
+import User from "@/models/user";
 import Category from "@/models/category";
 import dbConnect from "@/app/lib/mongodbConnection";
+import { escapeRegex } from "./utils";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
-import { LeanCategory, ProductType } from "@/types";
-import { Types } from "mongoose";
+import { LeanUser, PlainCategoryType } from "@/types";
 import { deleteImageWithProduct } from "./cloudinary";
+import { TProduct, TCategory } from "@/types";
+import Product from "@/models/modelTypes/product";
 
-export type PlainCategoryType = {
-  id: string;
-  name: string;
-  slug: string;
+const PRODUCT_PER_PAGE = 10;
+
+const PRODUCTS_PROJECTION = {
+  _id: 0,
+  id: { $toString: "$_id" },
+  name: 1,
+  slug: 1,
+  description: 1,
+  shortDescription: 1,
+  categoryPath: 1,
+  price: 1,
+  "discount.isActive": 1,
+  "discount.type": 1,
+  "discount.value": 1,
+  "variants.sku": 1,
+  "variants.price": 1,
+  "variants.stock": 1,
+  "variants.images.url": 1,
+  "variants.images.alt": 1,
+  "variants.images.isPrimary": 1,
+  "variants.images.order": 1,
+  "variants.options.name": 1,
+  "variants.options.value": 1,
+  "variantDefinitions.name": 1,
+  "variantDefinitions.values": 1,
+  baseImage: 1,
+  isFeatured: 1,
+  isBestseller: 1,
+  isNewArrival: 1,
+  "reviews.averageRating": 1,
+  "reviews.totalReviews": 1,
+  "reviews.ratingDistribution.1": 1,
+  "reviews.ratingDistribution.2": 1,
+  "reviews.ratingDistribution.3": 1,
+  "reviews.ratingDistribution.4": 1,
+  "reviews.ratingDistribution.5": 1,
 };
 
 export async function fetchProductById(id: string) {
   await dbConnect();
-  const objectId = new Types.ObjectId(id);
+  const products: TProduct[] = await Product.find({ slug: id }).lean<
+    TProduct[]
+  >();
 
-  const products: ProductType[] = await Product.aggregate([
-    { $match: { _id: objectId } },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "categoryInfo",
-      },
-    },
-    { $unwind: "$categoryInfo" },
-    {
-      $project: {
-        _id: 0,
-        id: { $toString: "$_id" },
-        name: 1,
-        slug: 1,
-        description: 1,
-        price: 1,
-        images: 1,
-        inStock: 1,
-        category: {
-          id: { $toString: "$categoryInfo._id" },
-          name: "$categoryInfo.name",
-          slug: "$categoryInfo.slug",
-        },
-      },
-    },
-  ]);
+  return JSON.parse(JSON.stringify(products[0]));
+}
 
-  return products[0];
+export async function fetchUsers() {
+  await dbConnect();
+
+  const users = await User.find({}).lean<LeanUser[]>();
+
+  return users;
 }
 
 export async function fetchCategories() {
   await dbConnect();
+  const categories: PlainCategoryType[] = await Category.aggregate([
+    { $project: { _id: 0, id: { $toString: "$_id" }, name: 1, slug: 1 } },
+  ]);
 
-  const categories = await Category.find({}, "name slug _id").lean<
-    LeanCategory[]
-  >();
-
-  const newCategories = categories.map((category) => {
-    return {
-      name: category.name,
-      slug: category.slug,
-      id: category._id.toString(),
-    };
-  }) as PlainCategoryType[];
-
-  return newCategories;
+  return categories;
 }
 
 export async function fetchProducts() {
   await dbConnect();
-
-  const products: ProductType[] = await Product.aggregate([
+  const products: TProduct[] = await Product.aggregate([
     {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "categoryInfo",
-      },
-    },
-    {
-      $unwind: "$categoryInfo",
-    },
-    {
-      $project: {
-        _id: 0,
-        id: { $toString: "$_id" },
-        name: 1,
-        slug: 1,
-        description: 1,
-        price: 1,
-        images: 1,
-        inStock: 1,
-        category: {
-          id: { $toString: "$categoryInfo._id" },
-          name: "$categoryInfo.name",
-          slug: "$categoryInfo.slug",
-        },
-      },
+      $project: PRODUCTS_PROJECTION,
     },
   ]);
+  return JSON.parse(JSON.stringify(products));
+}
 
-  return products;
+export async function productsPages(query: string = "") {
+  await dbConnect();
+  const regexQuery = new RegExp(escapeRegex(query), "i");
+
+  const documentCount = await Product.countDocuments({
+    $or: [{ name: { $regex: regexQuery } }],
+  });
+  const pages = Math.ceil(documentCount / PRODUCT_PER_PAGE);
+  return pages;
 }
 
 export async function deleteProduct(id: string) {
@@ -118,7 +107,9 @@ export async function deleteProduct(id: string) {
   try {
     // const result = await Product.deleteOne({ _id: id });
     const result = await Product.findOneAndDelete({ _id: id });
-    await deleteImageWithProduct(result.images);
+    result?.variants.forEach(async (variant) => {
+      await deleteImageWithProduct(variant.images);
+    });
   } catch (err) {
     console.log("ERROR>>>*****", err);
   }
@@ -127,62 +118,63 @@ export async function deleteProduct(id: string) {
 }
 
 export async function fetchProductsByCategory(
-  categorySlug: string,
+  categoryPath: string,
   productName: string
 ) {
   await dbConnect();
-  const prp: ProductType[] = await Product.aggregate([
+  const prp: TProduct[] = await Product.aggregate([
+    {
+      $match: {
+        categoryPath: categoryPath,
+      },
+    },
     {
       $match: {
         name: { $not: new RegExp(`^${productName}$`, "i") },
       },
     },
     {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "categoryInfo",
-      },
+      $limit: 3, // Limit to 4 related products
     },
     {
-      $unwind: "$categoryInfo",
-    },
-    {
-      $match: {
-        "categoryInfo.slug": categorySlug,
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        id: { $toString: "$_id" },
-        name: 1,
-        slug: 1,
-        description: 1,
-        price: 1,
-        images: 1,
-        inStock: 1,
-        category: {
-          id: { $toString: "$categoryInfo._id" },
-          name: "$categoryInfo.name",
-          slug: "$categoryInfo.slug",
-        },
-      },
+      $project: PRODUCTS_PROJECTION,
     },
   ]);
 
   if (prp.length === 0) {
     return [];
   }
-  return prp;
+  return JSON.parse(JSON.stringify(prp));
 }
 
-export async function filteredProductsByQuery(query: string) {
+export async function fetchFilteredProducts(query: string, page: number = 1) {
   await dbConnect();
-  const regexQuery = new RegExp(query, "i");
+  const regexQuery = new RegExp(escapeRegex(query), "i");
+  const offset = PRODUCT_PER_PAGE * (page - 1);
 
-  const products = await Product.aggregate([
+  const products: TProduct[] = await Product.aggregate([
+    {
+      $match: {
+        $or: [
+          { categoryPath: { $regex: regexQuery } },
+          { name: { $regex: regexQuery } },
+        ],
+      },
+    },
+    { $sort: { createdAt: -1 } },
+    { $skip: offset },
+    { $limit: PRODUCT_PER_PAGE },
+    {
+      $project: PRODUCTS_PROJECTION,
+    },
+  ]);
+
+  return JSON.parse(JSON.stringify(products));
+}
+
+export async function groupProductsByCategory() {
+  await dbConnect();
+  const products: TCategory[] = await Product.aggregate([
     {
       $lookup: {
         from: "categories",
@@ -191,78 +183,25 @@ export async function filteredProductsByQuery(query: string) {
         as: "categoryInfo",
       },
     },
-    // Unwind the customer array
     { $unwind: "$categoryInfo" },
     {
-      $match: {
-        $or: [{ "category.name": { $regex: regexQuery } }],
+      $project: {
+        ...PRODUCTS_PROJECTION,
+        categoryName: "$categoryInfo.name",
       },
     },
-    { $sort: { createdAt: -1 } },
+    {
+      $group: {
+        _id: "$categoryName",
+        products: { $push: "$$ROOT" },
+      },
+    },
     {
       $project: {
         _id: 1,
-        price: 1,
-        inStock: 1,
-        name: 1,
-        description: 1,
-        images: 1,
-        "category._id": 1,
-        "category.name": 1,
-        "category.slug": 1,
+        products: { $slice: ["$products", 10] },
       },
     },
   ]);
-
-  return products;
-}
-
-export async function groupProductsByCategory() {
-  await dbConnect();
-  const products: ProductType[] = await Product.aggregate([
-    {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "categoryDetails",
-      },
-    },
-    { $unwind: "$categoryDetails" },
-    {
-      $group: {
-        _id: "$categoryDetails._id",
-
-        product: {
-          $first: {
-            _id: 0,
-            id: { $toString: "$_id" },
-            name: "$name",
-            slug: "$slug",
-            images: "$images",
-            description: "$description",
-            inStock: "$inStock",
-            price: "$price",
-            category: {
-              id: { $toString: "$categoryDetails._id" },
-              name: "$categoryDetails.name",
-              slug: "$categoryDetails.slug",
-            },
-            // categoryName: "$categoryInfo.name",
-            // categorySlug: "$categoryInfo.slug",
-          },
-        },
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-      },
-    },
-    {
-      $replaceRoot: { newRoot: "$product" },
-    },
-  ]);
-
   return products;
 }

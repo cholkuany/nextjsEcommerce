@@ -1,6 +1,4 @@
 import Link from "next/link";
-import dbConnect from "@/app/lib/mongodbConnection";
-import Category from "@/models/category";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -15,8 +13,6 @@ import {
 } from "react-icons/fa";
 
 export default async function AdminDashboard() {
-  await dbConnect();
-  const categories = await Category.find({}).sort({ createdAt: -1 });
   const session = await auth();
   if (!session) {
     redirect("/signin");
@@ -25,13 +21,13 @@ export default async function AdminDashboard() {
     redirect("/");
   }
   return (
-    <div className="space-y-8 max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center">
+    <div className="space-y-4 max-w-6xl mx-auto px-4 md:pt-8">
+      <h3 className="text-3xl font-bold text-center">
         Welcome, {session?.user.name}
-      </h1>
+      </h3>
 
-      <section>
-        <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
+      <section className="flex flex-col">
+        <h5 className="text-xl font-semibold mb-4">Quick Links</h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {cardContents.map((card) => (
             <DashboardCard key={card.title} {...card} />
@@ -53,7 +49,7 @@ function DashboardCard({
 }) {
   return (
     <Link href={href}>
-      <div className="flex items-center gap-4 p-6 border rounded-xl shadow hover:shadow-md transition bg-white hover:bg-zinc-50 cursor-pointer">
+      <div className="flex items-center gap-4 p-6 border-t-2 hover:shadow-md transition bg-white hover:bg-zinc-50 cursor-pointer">
         <Icon className="w-6 h-6 text-green-600" />
         <h3 className="text-lg font-medium">{title}</h3>
       </div>

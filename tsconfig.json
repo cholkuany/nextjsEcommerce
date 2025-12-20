@@ -24,6 +24,13 @@
     "typeRoots": ["./types", "./node_modules/@types"],
     "types": ["next-auth"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/models/dbScript.js",
+    "src/migrations/migrate.ts"
+  ],
   "exclude": ["node_modules"]
 }

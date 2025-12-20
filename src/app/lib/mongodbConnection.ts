@@ -3,15 +3,10 @@ import mongoose, { Mongoose } from "mongoose";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import type { Adapter } from "next-auth/adapters";
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
   throw new Error("❌ Please define the MONGODB_URI environment variable.");
-}
-
-// Extend NodeJS global type
-declare global {
-  var _mongoose: { conn: Mongoose | null; promise: Promise<Mongoose> | null };
 }
 
 // Prevent TypeScript from complaining on re-run in dev
@@ -21,7 +16,7 @@ async function dbConnect(): Promise<Mongoose> {
   if (_mongoose.conn) return _mongoose.conn;
 
   if (!_mongoose.promise) {
-    _mongoose.promise = mongoose.connect(MONGODB_URI, {
+    _mongoose.promise = mongoose.connect(MONGODB_URI!, {
       bufferCommands: false,
     });
   }

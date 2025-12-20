@@ -6,17 +6,18 @@ import {
   useEffect,
   useState,
   ReactNode,
+  useCallback
 } from "react";
 import { CartItem, CartContextType } from "@/types";
+const emptyArray: CartContextType = {
+  cart: [],
+  addToCart: () => { },
+  updateQuantity: () => { },
+  deleteProductFromCart: () => { },
+  clearCart: () => { },
+};
 
-// type CartContextType = {
-//   cart: CartItem[];
-//   addToCart: (item: Omit<CartItem, "quantity">) => void;
-//   updateQuantity: (id: string, quantity: number) => void;
-//   deleteProductFromCart: (productId: string) => void;
-// };
-
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext = createContext<CartContextType | undefined>(emptyArray);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -58,12 +59,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const deleteProductFromCart = (productId: string) => {
-    setCart(cart.filter((t) => t.id !== productId));
+    setCart((prevCart) => prevCart.filter((t) => t.id !== productId));
   };
+
+  // const clearCart = () => {
+  //   setCart([]);
+  //   localStorage.removeItem("cart")
+  // }
+  const clearCart = useCallback(() => {
+    setCart([]);
+    localStorage.removeItem("cart");
+  }, []);
+
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, updateQuantity, deleteProductFromCart }}
+      value={{ cart, addToCart, clearCart, updateQuantity, deleteProductFromCart }}
     >
       {children}
     </CartContext.Provider>

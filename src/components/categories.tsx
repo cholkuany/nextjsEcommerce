@@ -1,121 +1,202 @@
 "use client";
 
-import { ProductsByCategory, ProductType } from "@/types";
+import { ProductType } from "@/types";
 import ProductCard from "./productCard";
+import Link from "next/link";
 
 import { useRef } from "react";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
+import { useMemo, useState, useEffect, useCallback, MouseEvent } from "react";
+
+/**
+ * Props
+ *  products  : Full product list (used to derive unique categories)
+ *  onSelect? : Optional cb fired when a category is clicked
+ */
 export default function DepartmentCarousel({
   products,
+  onSelect,
 }: {
   products: ProductType[];
+  onSelect?: (categoryName: string) => void;
 }) {
+  /* ------------------------------------------------------------------ */
+  /* 1. Build a UNIQUE, COUNTED category list from the products array   */
+  /* ------------------------------------------------------------------ */
+  const categories = useMemo(
+    () =>
+      Array.from(
+        products
+          .reduce((map, p) => {
+            const name = p.category.name;
+            const current = map.get(name);
+            map.set(name, {
+              /* keep the first image we see for the avatar */
+              image: current?.image || p.images[0],
+              /* accumulate product count */
+              count: (current?.count || 0) + 1,
+              name,
+            });
+            return map;
+          }, new Map<string, { image: string; count: number; name: string }>())
+          .values()
+      ),
+    [products]
+  );
+
+  /* ------------------------------------------------------------------ */
+  /* 2. Horizontal scrolling helpers                                    */
+  /* ------------------------------------------------------------------ */
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const SCROLL_STEP = 320; // px
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
-  const scroll = (direction: string) => {
+  const updateArrows = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 0);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+  }, []);
+
+  useEffect(() => {
+    updateArrows();
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateArrows);
+    return () => el.removeEventListener("scroll", updateArrows);
+  }, [updateArrows]);
+
+  const doScroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
-    const container = scrollRef.current;
-    const scrollAmount = 300;
-
-    container.scrollBy({
-      left: direction === "left" ? -scrollAmount : scrollAmount,
+    scrollRef.current.scrollBy({
+      left: dir === "left" ? -SCROLL_STEP : SCROLL_STEP,
       behavior: "smooth",
     });
   };
 
+  /* ------------------------------------------------------------------ */
+  /* 3. Click-drag support (desktop)                                    */
+  /* ------------------------------------------------------------------ */
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollStart = useRef(0);
+
+  const onDragStart = (e: MouseEvent) => {
+    if (!scrollRef.current) return;
+    isDragging.current = true;
+    startX.current = e.pageX - scrollRef.current.offsetLeft;
+    scrollStart.current = scrollRef.current.scrollLeft;
+    scrollRef.current.classList.add("cursor-grabbing");
+  };
+  const onDragMove = (e: MouseEvent) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = x - startX.current;
+    scrollRef.current.scrollLeft = scrollStart.current - walk;
+  };
+  const endDrag = () => {
+    isDragging.current = false;
+    scrollRef.current?.classList.remove("cursor-grabbing");
+  };
+
+  /* ------------------------------------------------------------------ */
+  /* 4. Render                                                          */
+  /* ------------------------------------------------------------------ */
   return (
-    <div className="flex flex-col w-full mx-auto mb-16">
-      <h1 className="text-2xl font-bold mb-4">Shop by Department</h1>
-      <p className="mb-6">
-        Explore our collection of products. Use the filter to narrow down your
-        search.
-      </p>
+    <section className="w-full mx-auto mb-16">
+      <header className="mb-6">
+        <h2 className="text-center text-3xl font-extrabold text-gray-900">
+          Shop by Department
+        </h2>
+        <p className="text-center text-gray-600">
+          Swipe, scroll or click to pick a category.
+        </p>
+      </header>
 
-      {/* Arrows */}
-      <div className="relative w-full">
+      {/* Arrow buttons */}
+      <div className="relative">
+        {/* left */}
         <button
-          onClick={() => scroll("left")}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white shadow-md rounded-full"
+          aria-label="Scroll departments left"
+          onClick={() => doScroll("left")}
+          disabled={!canScrollLeft}
+          className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full shadow-md bg-white transition
+            ${
+              canScrollLeft
+                ? "hover:bg-gray-100"
+                : "opacity-0 pointer-events-none"
+            }
+          `}
         >
-          <FaChevronLeft size={24} />
+          <FaChevronLeft size={22} />
         </button>
 
+        {/* scroll container */}
         <div
           ref={scrollRef}
-          className="overflow-x-auto no-scrollbar whitespace-nowrap space-x-2 pb-2 scroll-smooth"
+          /* keyboard nav */
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowLeft") doScroll("left");
+            if (e.key === "ArrowRight") doScroll("right");
+          }}
+          /* drag to scroll */
+          onMouseDown={onDragStart}
+          onMouseMove={onDragMove}
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}
+          /* styling */
+          className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar cursor-grab
+                     py-2 px-1 scroll-pt-1
+                     snap-x snap-mandatory"
         >
-          {/* Slides */}
-          {products.map((product) => {
-            return (
-              <div
-                key={product.slug}
-                className="relative inline-block h-40 w-44 align-top"
-              >
+          {categories.map((cat) => (
+            <button
+              key={cat.name}
+              onClick={() => onSelect?.(cat.name)}
+              className="shrink-0 flex flex-col items-center snap-start w-32 focus:outline-none"
+            >
+              {/* avatar */}
+              <div className="relative h-28 w-28">
                 <Image
-                  src={product.images[0]}
-                  alt={product.name}
-                  width={400}
-                  height={400}
-                  className="object-cover w-28 h-28 mb-2 rounded-full"
+                  src={cat.image}
+                  alt={cat.name}
+                  fill
+                  loading="lazy"
+                  className="rounded-full object-cover"
                 />
-                <div className="absolute inset-0 w-28 h-28 bg-blue-500/10 rounded-full"></div>
-                <p className="text-md font-light">{product.category.name}</p>
+                {/* product count badge */}
+                <span className="absolute bottom-1 right-1 text-[10px] leading-none px-1.5 py-0.5 rounded-full bg-white shadow text-gray-700 font-semibold">
+                  {cat.count}
+                </span>
               </div>
-            );
-          })}
+              <span className="mt-2 text-sm font-medium text-gray-800 capitalize">
+                {cat.name}
+              </span>
+            </button>
+          ))}
         </div>
 
+        {/* right */}
         <button
-          onClick={() => scroll("right")}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white shadow-md rounded-full"
+          aria-label="Scroll departments right"
+          onClick={() => doScroll("right")}
+          disabled={!canScrollRight}
+          className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full shadow-md bg-white transition
+            ${
+              canScrollRight
+                ? "hover:bg-gray-100"
+                : "opacity-0 pointer-events-none"
+            }
+          `}
         >
-          <FaChevronRight size={24} />
+          <FaChevronRight size={22} />
         </button>
       </div>
-
-      <h1 className="text-2xl font-bold mb-4 mt-20">On sale in your area</h1>
-      {/* Arrows */}
-      <div className="relative w-full">
-        <button
-          onClick={() => scroll("left")}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white shadow-md rounded-full"
-        >
-          <FaChevronLeft size={24} />
-        </button>
-
-        <div
-          ref={scrollRef}
-          className="w-full flex flex-wrap items-center justify-center gap-4 mx-auto"
-        >
-          {/* Slides */}
-          {products.map((product) => {
-            return (
-              // <div
-              //   key={product.slug}
-              //   className="relative inline-block h-40 w-44 align-top"
-              // >
-              //   <Image
-              //     src={product.images[0]}
-              //     alt={product.name}
-              //     width={400}
-              //     height={400}
-              //     className="object-cover w-28 h-28 mb-2"
-              //   />
-              // </div>
-              <ProductCard key={product.slug} product={product} />
-            );
-          })}
-        </div>
-
-        <button
-          onClick={() => scroll("right")}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white shadow-md rounded-full"
-        >
-          <FaChevronRight size={24} />
-        </button>
-      </div>
-    </div>
+    </section>
   );
 }

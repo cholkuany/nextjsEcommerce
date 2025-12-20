@@ -19,3 +19,25 @@ export function ProductDetailsSkeleton() {
     </section>
   );
 }
+
+export function ProductCardSkeleton() {
+  return (
+    <div className="relative size-40 lg:size-80 animate-pulse rounded-md overflow-hidden shadow">
+      <div className="h-full w-full bg-gray-200 rounded-lg"></div>
+      <div className="absolute bottom-0 left-0 right-0 bg-transparent bg-opacity-60 p-2 flex items-end justify-between text-sm sm:text-xs">
+        <div className="h-4 w-12 bg-gray-300 rounded"></div>
+        <div className="h-6 w-6 bg-gray-300 rounded"></div>
+      </div>
+    </div>
+  );
+}
+
+export function GallerySkeleton({ count = 8 }: { count?: number }) {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      {Array.from({ length: count }).map((_, idx) => (
+        <ProductCardSkeleton key={idx} />
+      ))}
+    </div>
+  );
+}
