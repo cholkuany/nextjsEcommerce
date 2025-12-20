@@ -1,5 +1,5 @@
 // models/Revenue.ts
-import mongoose, { Schema, Document, models, model } from "mongoose";
+import mongoose, { Schema, models, model } from "mongoose";
 
 export interface IRevenueBreakdown {
   productSales: number;

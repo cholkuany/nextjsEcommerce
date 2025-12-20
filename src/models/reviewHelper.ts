@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-import Product from "./product";
+import Product from "./modelTypes/product";
 import Review from "./review";
-import { ReviewDocument } from "./review";
 
 export interface IDistribution {
   5: number;

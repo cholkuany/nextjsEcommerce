@@ -1,5 +1,5 @@
 // models/Address.ts
-import mongoose, { Schema, Document, models, model } from "mongoose";
+import mongoose, { Schema} from "mongoose";
 
 export interface IAddress {
   type: "billing" | "shipping" | "both";

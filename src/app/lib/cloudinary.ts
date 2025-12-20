@@ -3,8 +3,6 @@ import { revalidatePath } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
 import dbConnect from "@/app/lib/mongodbConnection";
 
-import Category from "@/models/category";
-// import Product from "@/models/product";
 import Product from "@/models/modelTypes/product";
 import { IProductImage } from "@/models/modelTypes/product";
 
@@ -67,7 +65,7 @@ function getPublicIdFromUrl(
     const urlObj = new URL(url);
     const path = urlObj.pathname; // /v1234567890/products/image.jpg
     const parts = path.split("/").slice(-2); // remove /v1234567890/
-    const publicIdWithExt = parts.join("/"); // products/image.jpg
+    // const publicIdWithExt = parts.join("/"); // products/image.jpg
     const folder = parts[0]; // products
     const imagePublicId = parts[1]; // image.jpg
     const publicId = imagePublicId.replace(/\.[^/.]+$/, ""); // remove .jpg
@@ -129,7 +127,7 @@ export async function deleteImageWithProduct(images: IProductImage[]) {
         results.failureCount++;
         results.failedImages.push(img.url);
       }
-    } catch (error) {
+    } catch{
       results.failureCount++;
       results.failedImages.push(img.url);
     }
@@ -161,6 +159,7 @@ async function deleteImageFromCloudinary(
       status: "deleted",
     };
   } catch (error) {
+    console.error("Failed to delete image from Cloudinary:", error);
     return { status: "failed" };
   }
 }

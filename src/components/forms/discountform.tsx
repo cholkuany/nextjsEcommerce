@@ -104,37 +104,3 @@ export default function DiscountForm() {
     </form>
   );
 }
-
-// "use client"; FOR SERVER ACTION
-
-// import { createDiscount } from "@/actions/createDiscount";
-
-// export default function DiscountActionForm() {
-//   const formRef = React.useRef<HTMLFormElement>(null);
-
-//   async function onSubmit(formData: FormData) {
-//     const payload = {
-//       isActive: formData.get("isActive") === "on",
-//       type: formData.get("type"),
-//       value: parseFloat(formData.get("value") as string),
-//       startDate: new Date(formData.get("startDate") as string),
-//       endDate: new Date(formData.get("endDate") as string),
-//       maxDiscountAmount: parseFloat(
-//         formData.get("maxDiscountAmount") as string
-//       ),
-//     };
-
-//     const result = await createDiscount(payload);
-//     if (!result.success) {
-//       console.log(result.errors);
-//     } else {
-//       alert("Discount created!");
-//     }
-//   }
-
-//   return (
-//     <form ref={formRef} action={onSubmit}>
-//       {/* Same fields as before */}
-//     </form>
-//   );
-// }

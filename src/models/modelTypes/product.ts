@@ -320,7 +320,7 @@ export type ProductDocument = mongoose.HydratedDocument<
 >;
 
 export interface IProductModel
-  extends Model<IProduct<mongoose.Types.ObjectId>, {}, IProductMethods> {
+  extends Model<IProduct<mongoose.Types.ObjectId>, unknown, IProductMethods> {
   getLowStockProducts(threshold?: number): Promise<ProductDocument[]>;
   getOutOfStockProducts(): Promise<ProductDocument[]>;
   getCriticalStockProducts(): Promise<ProductDocument[]>;

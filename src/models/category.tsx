@@ -1,24 +1,4 @@
-// import mongoose from "mongoose";
-
-// const { Schema, model, models } = mongoose;
-
-// const CategorySchema = new Schema(
-//   {
-//     name: { type: String, unique: true, required: true },
-//     slug: { type: String, unique: true, required: true },
-//     image: { type: String, default: "", required: false },
-//   },
-//   { timestamps: true }
-// );
-
-// // export type CategoryDocument = mongoose.InferSchemaType<typeof CategorySchema>;
-
-// const Category = models.Category || model("Category", CategorySchema);
-
-// export default Category;
-
-// models/Category.ts
-import mongoose, { Schema, Document, models, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 export interface ICategoryImage {
   url: string;

@@ -1,25 +1,15 @@
 "use server";
 
-import { z } from "zod";
-
-import dbConnect from "@/app/lib/mongodbConnection";
-
 // import Product from "@/models/product";
 import Product from "@/models/modelTypes/product";
-import { IProductImage } from "@/models/modelTypes/product";
 import { FormState } from "@/types";
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { uploadImages } from "@/app/lib/cloudinary";
-import { parseFormData } from "@/utils/formParser";
-import { validateImages } from "@/utils/validateImages";
 import { FormDataSchema } from "@/zodSchemas/formSchema";
 
-const ProductNameSchema = z.object({
-  name: z.string().min(5, "Name is required"),
-});
+
 export async function editProduct(
   productId: string,
   prevState: FormState,
@@ -64,25 +54,17 @@ export async function editProduct(
     };
   }
 
-  const { name, slug, description, category } = validatedFields.data;
-
   // const priceInCents = price * 100;
 
   try {
-    // const newProduct = await Product.findByIdAndUpdate(
-    //   {
-    //     _id: productId,
-    //   },
-    //   {
-    //     name: name,
-    //     slug: slug,
-    //     price: price,
-    //     description: description,
-    //     inStock: stock,
-    //     category: category,
-    //     images: images,
-    //   }
-    // );
+    await Product.findByIdAndUpdate(
+      {
+        _id: productId,
+      },
+      {
+        ...validatedFields.data,
+      }
+    );
     console.log("BACKEND");
   } catch (error) {
     return {
@@ -94,41 +76,3 @@ export async function editProduct(
   redirect("/admin/products/");
 }
 
-async function editUtil(name: string, productId: string, formData: FormData) {
-  await dbConnect();
-  const validatedFields = ProductNameSchema.safeParse({
-    ...Object.fromEntries(formData.entries()),
-  });
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Failed to Update Product's Name.",
-    };
-  }
-
-  console.log(validatedFields.data);
-
-  const field = {
-    [name]: validatedFields.data[name as keyof typeof validatedFields.data],
-  };
-  try {
-    const newProduct = await Product.findByIdAndUpdate(
-      {
-        _id: productId,
-      },
-      field
-    );
-    console.log(`Product updated: ${productId}`);
-  } catch (error) {
-    return {
-      message: `Database Error: Failed to Update Invoice. ${error}`,
-    };
-  }
-}
-function validateFormValues(formData: FormData) {
-  const validated = ProductNameSchema.safeParse({
-    ...Object.fromEntries(formData.entries()),
-  });
-  return validated;
-}

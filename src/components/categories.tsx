@@ -1,8 +1,6 @@
 "use client";
 
 import { ProductType } from "@/types";
-import ProductCard from "./productCard";
-import Link from "next/link";
 
 import { useRef } from "react";
 import Image from "next/image";
@@ -125,10 +123,9 @@ export default function DepartmentCarousel({
           onClick={() => doScroll("left")}
           disabled={!canScrollLeft}
           className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full shadow-md bg-white transition
-            ${
-              canScrollLeft
-                ? "hover:bg-gray-100"
-                : "opacity-0 pointer-events-none"
+            ${canScrollLeft
+              ? "hover:bg-gray-100"
+              : "opacity-0 pointer-events-none"
             }
           `}
         >
@@ -187,10 +184,9 @@ export default function DepartmentCarousel({
           onClick={() => doScroll("right")}
           disabled={!canScrollRight}
           className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full shadow-md bg-white transition
-            ${
-              canScrollRight
-                ? "hover:bg-gray-100"
-                : "opacity-0 pointer-events-none"
+            ${canScrollRight
+              ? "hover:bg-gray-100"
+              : "opacity-0 pointer-events-none"
             }
           `}
         >

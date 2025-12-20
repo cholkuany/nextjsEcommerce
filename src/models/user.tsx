@@ -1,11 +1,11 @@
-import mongoose, { Schema, Document, models, model, Model } from "mongoose";
+import { Schema, Document, models, model, Model } from "mongoose";
 
 export interface UserType extends Document {
   name?: string;
   image?: string;
   emailVerified?: { type: Date };
-  email: { type: String; unique: true };
-  role: { type: String; enum: ["user", "admin"]; default: "user" };
+  email: { type: string; unique: true };
+  role: { type: string; enum: ["user", "admin"]; default: "user" };
 }
 const UserSchema = new Schema<UserType>(
   {

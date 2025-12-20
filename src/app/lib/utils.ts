@@ -1,6 +1,4 @@
-import { Heart, Star } from "lucide-react";
 import { IDiscount } from "@/models/modelTypes/product";
-import { number } from "zod";
 
 export const generatePagination = (currentPage: number, totalPages: number) => {
   // If the total number of pages is 7 or less,

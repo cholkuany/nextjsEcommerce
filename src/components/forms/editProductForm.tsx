@@ -5,11 +5,10 @@ import React, {
   useState,
   ChangeEvent,
   useEffect,
-  useRef,
+  // useRef,
 } from "react";
 import Link from "next/link";
 import { FiTag, FiLink, FiFileText, FiImage } from "react-icons/fi";
-import { FaDollarSign } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
 
 import Breadcrumbs from "../breadcrumbs";
@@ -25,7 +24,6 @@ import type {
   IProductImage,
   IProductSEO,
   IDiscount,
-  TDiscountType,
   IVideo,
 } from "@/models/modelTypes/product";
 import { TProduct, PlainCategoryType, ProductType } from "@/types";
@@ -447,52 +445,52 @@ export function EditProductForm({
   product: TProduct;
   categories: PlainCategoryType[];
 }) {
-  const [uploading, setUploading] = useState(false);
-  const [previews, setPreviews] = useState<string[]>([]);
+  // const [uploading, setUploading] = useState(false);
+  // const [previews, setPreviews] = useState<string[]>([]);
 
   // Delete image by URL
-  const [deletedImageState, deleteImageAction, isImageDeletionPending] =
-    useActionState(deleteImageByUrl, imageState);
+  // const [deletedImageState, deleteImageAction, isImageDeletionPending] =
+  //   useActionState(deleteImageByUrl, imageState);
 
-  // Modal setup
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
+  // // Modal setup
+  // const [showModal, setShowModal] = useState(false);
+  // const [modalMessage, setModalMessage] = useState("");
 
-  const nameInputRef = useRef<HTMLInputElement>(null);
+  // const nameInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (deletedImageState.status === "success") {
-      setModalMessage("Image deleted successfully.");
-      setShowModal(true);
-    } else if (deletedImageState.status === "failed") {
-      setModalMessage("Failed to delete image.");
-      setShowModal(true);
-    }
-  }, [deletedImageState.status]);
+  // useEffect(() => {
+  //   if (deletedImageState.status === "success") {
+  //     setModalMessage("Image deleted successfully.");
+  //     setShowModal(true);
+  //   } else if (deletedImageState.status === "failed") {
+  //     setModalMessage("Failed to delete image.");
+  //     setShowModal(true);
+  //   }
+  // }, [deletedImageState.status]);
 
   const editProductWithId = editProduct.bind(null, product.id);
 
-  const [state, editFormAction, isPending] = useActionState(
+  const [state, editFormAction] = useActionState(
     editProductWithId,
     initialState
   );
 
-  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
+  // const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+  //   const files = e.target.files;
+  //   if (!files || files.length === 0) return;
 
-    setUploading(true);
+  //   setUploading(true);
 
-    const newPreviews: string[] = [];
-    const uploadedFiles = Array.from(files);
+  //   const newPreviews: string[] = [];
+  //   const uploadedFiles = Array.from(files);
 
-    for (const file of uploadedFiles) {
-      newPreviews.push(URL.createObjectURL(file));
-    }
+  //   for (const file of uploadedFiles) {
+  //     newPreviews.push(URL.createObjectURL(file));
+  //   }
 
-    setPreviews((prev) => [...prev, ...newPreviews]);
-    setUploading(false);
-  };
+  //   setPreviews((prev) => [...prev, ...newPreviews]);
+  //   setUploading(false);
+  // };
 
   const [form, setForm] = useState<TProduct>({ ...product });
 
@@ -512,11 +510,11 @@ export function EditProductForm({
     form.videos || [{ url: "", title: "", thumbnail: "" }]
   );
 
-  const [error, setError] = useState<string>("");
+  // const [error, setError] = useState<string>("");
 
-  function set<K extends keyof TProduct>(key: K, value: TProduct[K]) {
-    setForm((f) => ({ ...f, [key]: value }));
-  }
+  // function set<K extends keyof TProduct>(key: K, value: TProduct[K]) {
+  //   setForm((f) => ({ ...f, [key]: value }));
+  // }
 
   function addVideo() {
     setVideos((videos) => [...videos, { url: "", thumbnail: "", title: "" }]);
@@ -602,26 +600,15 @@ export function EditProductForm({
     );
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
+  // async function handleSubmit(e: React.FormEvent) {
+  //   e.preventDefault();
+  //   setError("");
 
-    if (!form.name.trim() || !form.slug.trim() || variants.length === 0) {
-      return setError("Name, Slug, and at least one Variant are required.");
-    }
+  //   if (!form.name.trim() || !form.slug.trim() || variants.length === 0) {
+  //     return setError("Name, Slug, and at least one Variant are required.");
+  //   }
 
-    // try {
-    //   await onSubmit({
-    //     ...form,
-    //     baseImages,
-    //     variantDefinitions,
-    //     variants,
-    //   });
-    //   alert("Saved!");
-    // } catch (err: any) {
-    //   setError(err?.message ?? "Save failed");
-    // }
-  }
+  // }
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-8">
@@ -648,9 +635,9 @@ export function EditProductForm({
           <span className="font-light">Editing</span>
           <span className="underline underline-offset-2">{product.name}</span>
         </h1>
-        {error && (
+        {/* {error && (
           <div className="p-2 bg-red-200 text-red-900 mb-2">{error}</div>
-        )}
+        )} */}
 
         {/* GENERAL INFO */}
         <fieldset className="border rounded p-4">
@@ -1114,7 +1101,7 @@ export function EditProductForm({
         <fieldset className="border rounded p-4">
           <legend className="font-semibold">Videos</legend>
           {videos?.map((video) => (
-            <div>
+            <div key={video.title}>
               <label>
                 Video <video src={video.url}></video>
               </label>
