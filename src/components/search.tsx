@@ -3,6 +3,7 @@
 import { SlMagnifier } from "react-icons/sl";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import { Input } from "./ui/input";
 
 export default function Search({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams();
@@ -32,16 +33,25 @@ export default function Search({ placeholder }: { placeholder: string }) {
       <label htmlFor="search" className="sr-only">
         Search
       </label>
-      <input
+      {/* <input
         id="search"
-        className="peer outline-0 border border-gray-200 block w-full rounded-md py-[9px] pl-10 text-sm placeholder:text-gray-500 focus:border-blue-700"
+        className="peer outline-0 border border-gray-200 block w-full rounded-full py-[9px] pl-10 text-sm placeholder:text-gray-500 focus:border-blue-700"
+        placeholder={placeholder}
+        onChange={(e) => {
+          handleSearch(e.target.value);
+        }}
+        defaultValue={searchParams.get("query")?.toString()}
+      /> */}
+      <SlMagnifier className="absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+      <Input
+        id="search"
+        className="peer outline-0 border border-gray-200 block w-full rounded-full py-[9px] pl-4 pr-10 text-sm placeholder:text-gray-500 focus:border-blue-700"
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
         defaultValue={searchParams.get("query")?.toString()}
       />
-      <SlMagnifier className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
     </div>
   );
 }

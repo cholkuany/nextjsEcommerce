@@ -9,8 +9,8 @@ export default async function Home() {
   console.log('product', products[0])
 
   return (
-    <div className="flex flex-col min-h-screen mt-16">
-      <section className="mx-auto py-12 w-full">
+    <div className="flex flex-col min-h-screen">
+      <section className="mx-auto w-full">
         <ProductGallery products={products} />
       </section>
     </div>

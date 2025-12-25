@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, DownloadCloud } from "lucide-react";
+import { DownloadCloud } from "lucide-react";
 
 import AddToCart from "@/components/addToCart";
 import type { TProduct } from "@/types";
@@ -12,7 +12,6 @@ import { getDiscountedPrice } from "@/app/lib/utils";
 // UI Components
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
 export default function ProductCard({ product }: { product: TProduct }) {
   const { finalPrice, discountPercent } = getDiscountedPrice(
@@ -24,7 +23,7 @@ export default function ProductCard({ product }: { product: TProduct }) {
   const ratingCount = product.reviews?.totalReviews ?? 0;
   // md:flex md:flex-col
   return (
-    <Card className="group grid grid-cols-1 duration-200 overflow-hidden w-[240px] md:max-w-[250px] h-[550px] bg-white">
+    <Card className="relative group grid grid-cols-1 duration-200 overflow-hidden w-28 md:w-48 bg-white">
       {/* ---------- Image Section ---------- */}
       <Link
         href={`/product/${product.slug}`}
@@ -39,20 +38,10 @@ export default function ProductCard({ product }: { product: TProduct }) {
           priority
         />
 
-        {/* Wishlist Button */}
-        <Button
-          size="icon"
-          variant="ghost"
-          className="absolute top-2 right-2 z-10 bg-white rounded-full shadow hover:bg-gray-100 transition-opacity opacity-0 group-hover:opacity-100"
-          aria-label="Add to Wishlist"
-        >
-          <Heart className="w-4 h-4 text-gray-600 hover:text-red-500" />
-        </Button>
-
         {/* Sale Badge */}
         {product.discount?.isActive && (
-          <Badge className="absolute top-2 left-2 bg-red-600 text-white text-[11px] px-2 py-0.5 rounded-sm z-10">
-            {discountPercent}% OFF
+          <Badge className="absolute top-2 left-1 bg-red-600 text-white text-[11px] px-2 py-0.5 rounded-sm z-10">
+            {discountPercent}% off
           </Badge>
         )}
 
@@ -77,7 +66,7 @@ export default function ProductCard({ product }: { product: TProduct }) {
         >
           {product.name}
         </Link>
-        <p className="font-bold line-clamp-3 tracking-tighter">
+        <p className="font-bold line-clamp-2 md:line-clamp-3 tracking-tighter">
           {product.shortDescription}
         </p>
 
@@ -106,12 +95,11 @@ export default function ProductCard({ product }: { product: TProduct }) {
             </span>
           )}
         </div>
-
-        {/* Add to Cart */}
-        <div className="mt-auto">
-          <AddToCart product={product} />
-        </div>
       </CardContent>
+      {/* Add to Cart */}
+      <div className="absolute top-0 right-0 mt-auto">
+        <AddToCart product={product} />
+      </div>
     </Card>
   );
 }

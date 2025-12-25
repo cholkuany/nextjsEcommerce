@@ -69,7 +69,7 @@ export default function ProductGallery({
   );
 
   return (
-    <div className="flex flex-col gap-20 w-full">
+    <div className="flex flex-col w-full">
 
       {/* 🟦 MAIN GRID (filtered) */}
       <Section title={category ? category : "All products"} products={filteredProducts} />
@@ -94,7 +94,7 @@ export function Section({
   products: TProduct[];
 }) {
   return (
-    <section className="w-full mt-12">
+    <section className="w-full mt-6 md:mt-12">
       <h2 className="text-3xl md:text-4xl font-extrabold text-left mb-8">
         {title}
       </h2>
@@ -115,4 +115,3 @@ export function Section({
     </section>
   );
 }
-

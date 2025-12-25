@@ -36,7 +36,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} relative font-sans antialiased px-2 md:px-8 mt-44`}
+        className={`${geistSans.variable} ${geistMono.variable} relative font-sans antialiased px-2 md:px-8 mt-4`}
       >
         <CartProvider>
           {/* 🌐 NAVBAR */}

@@ -3,6 +3,7 @@
 import { useCart } from "@/app/providers/cartContext/context";
 import { CartItem } from "@/types";
 import { TProduct } from "@/types";
+import { Plus } from "lucide-react";
 
 export default function AddToCart({ product }: { product: TProduct }) {
   const cartItem: CartItem = {
@@ -27,12 +28,20 @@ export default function AddToCart({ product }: { product: TProduct }) {
   };
 
   return (
+    // <button
+    //   onClick={handleClick}
+    //   className="flex justify-center items-center hover:text-green-300 transition-colors z-20 text-white bg-blue-700 rounded-full p-1 w-full"
+    //   title="Add to Cart"
+    // >
+    //   <Plus className="ml-2 h-4 w-4" />
+    // </button>
     <button
       onClick={handleClick}
-      className="flex justify-center items-center hover:text-green-300 transition-colors z-20 text-white bg-blue-700 rounded-full p-1 w-full"
+      className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-700 text-white hover:bg-blue-600 transition"
       title="Add to Cart"
     >
-      Add to cart
+      <Plus className="h-4 w-4" />
     </button>
+
   );
 }

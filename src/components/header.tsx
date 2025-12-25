@@ -1,12 +1,23 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { Menu, User } from "lucide-react";
+
+// Shadcn UI Components
+import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+
+// Your Original Components
 import { CartButton } from "./cartButton";
 import UserDropdown from "@/components/dropDownMenu";
-import { Heart } from "lucide-react";
 import Search from "./search";
-import Image from "next/image";
 import CategoriesBanner from "./categoryBanner";
 import { PlainCategoryType, Session } from "@/types";
 
@@ -17,223 +28,103 @@ export default function Header({
   session: Session;
   categories: PlainCategoryType[];
 }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
-    <header className="fixed -top-1 right-0 left-0 w-full bg-white text-gray-700 border-b border-gray-100 z-50 px-4 md:px-8">
-      <nav className="py-5 mx-auto">
-        {/* Top Row: Brand + Hamburger + User/Cart */}
-        <div className="flex items-center justify-between">
-          <div className="flex">
-            {/* Brand Logo */}
-            <Link
-              href="/"
-              className="text-2xl font-bold tracking-tight hover:text-blue-400 transition"
-            >
-              <Image
-                src="/logo.png"
-                alt="ShopMate Logo"
-                width={100}
-                height={100}
-                priority
-                className="h-12 w-12 rounded-full"
-              />
-            </Link>
+    <div className="flex flex-col gap-8">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center px-4 md:px-8">
+          {/* Logo */}
+          <Link href="/" className="mr-6 flex items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="ShopMate Logo"
+              width={40}
+              height={40}
+              priority
+              className="rounded-full"
+            />
+            <span className="hidden font-bold sm:inline-block">ShopMate</span>
+          </Link>
+
+          {/* Desktop Search Bar - Placed centrally and prominently */}
+          <div className="hidden flex-1 md:flex justify-center">
+            <div className="w-full max-w-md">
+              <Search placeholder="What are you looking for?" />
+            </div>
           </div>
 
-          {/* Search Bar (desktop only) */}
-          <div className="hidden md:block flex-1 px-8">
-            <Search placeholder="Search products..." />
-          </div>
 
-          {/* User + Cart */}
-          <div className="flex items-center gap-4 ml-4">
-            <Heart />
+          {/* Desktop Navigation Actions */}
+          <div className="hidden items-center gap-2 md:flex">
+
+            {/* Assuming CartButton manages its own state and icon */}
             <CartButton />
 
             {session ? (
-              <UserDropdown user={session?.user} />
+              <UserDropdown user={session.user} />
             ) : (
-              <form action="/signin">
-                <button
-                  type="submit"
-                  className="px-3 py-1 text-sm rounded hover:bg-gray-100/10 transition"
-                >
-                  Sign in
-                </button>
-              </form>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/signin">
+                  <User className="h-5 w-5 mr-2" />
+                  Sign In
+                </Link>
+              </Button>
             )}
           </div>
-            {/* Mobile Hamburger */}
-          <button
-            className="md:hidden flex items-center px-2 py-1"
-            onClick={() => setMenuOpen((open) => !open)}
-            aria-label="Open navigation menu"
-            aria-expanded={menuOpen}
-          >
-            <svg
-              className="h-7 w-7"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 8h16M4 16h16"}
-              />
-            </svg>
-          </button>
-        </div>
 
-        {/* Mobile: Search & Departments */}
-        <div
-          className={`md:hidden transition-all duration-200 ${
-            menuOpen ? "max-h-screen mt-4" : "max-h-0 overflow-hidden"
-          }`}
-        >
-          <Search placeholder="Search products..." />
+          {/* Mobile Menu */}
+          <div className="md:hidden ml-auto flex items-center gap-2">
+            <CartButton />
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Toggle Menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-full sm:w-[340px]">
+                <SheetHeader>
+                  <Link href="/" className="flex items-center gap-2">
+                    <Image
+                      src="/logo.png"
+                      alt="ShopMate Logo"
+                      width={32}
+                      height={32}
+                      className="rounded-full"
+                    />
+                    <span className="font-bold">ShopMate</span>
+                  </Link>
+                </SheetHeader>
+                <div className="mt-6 flex flex-col gap-4">
+                  <Search placeholder="What are you looking for?" />
+                  <nav className="flex flex-col gap-2">
+                    {session ? (
+                      // If UserDropdown is complex, you can create a mobile version
+                      // For now, let's assume it works or link to an account page
+                      <Button variant="ghost" className="justify-start gap-2" asChild>
+                        <Link href="/account">
+                          <User className="h-5 w-5" />
+                          My Account
+                        </Link>
+                      </Button>
+                    ) : (
+                      <Button variant="ghost" className="justify-start gap-2" asChild>
+                        <Link href="/signin">
+                          <User className="h-5 w-5" />
+                          Sign In
+                        </Link>
+                      </Button>
+                    )}
+                  </nav>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
-      </nav>
-      <CategoriesBanner categories={categories} />
-    </header>
+      </header>
+      {/* Category Banner - Sits below the main header */}
+      <div className="">
+        <CategoriesBanner categories={categories} />
+      </div>
+    </div>
   );
 }
-
-
-// "use client";
-
-// import { useState } from "react";
-// import Link from "next/link";
-// import Image from "next/image";
-// import {
-//   AppBar,
-//   Toolbar,
-//   IconButton,
-//   Box,
-//   Container,
-//   Button,
-//   Drawer,
-// } from "@mui/material";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import CloseIcon from "@mui/icons-material/Close";
-// import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
-// import { CartButton } from "./cartButton";
-// import UserDropdown from "@/components/dropDownMenu";
-// import Search from "./search";
-// import CategoriesBanner from "./categoryBanner";
-// import { PlainCategoryType, Session } from "@/types";
-
-// export default function Header({
-//   session,
-//   categories,
-// }: {
-//   session: Session;
-//   categories: PlainCategoryType[];
-// }) {
-//   const [menuOpen, setMenuOpen] = useState(false);
-
-//   return (
-//     <>
-//       <AppBar
-//         position="fixed"
-//         elevation={0}
-//         sx={{
-//           backgroundColor: "white",
-//           color: "text.primary",
-//           borderBottom: "1px solid",
-//           borderColor: "divider",
-//         }}
-//       >
-//         <Container maxWidth="xl">
-//           <Toolbar disableGutters sx={{ py: 1 }}>
-//             {/* Left: Hamburger + Logo */}
-//             <Box sx={{ display: "flex", alignItems: "center" }}>
-//               <IconButton
-//                 edge="start"
-//                 sx={{ display: { md: "none" }, mr: 1 }}
-//                 onClick={() => setMenuOpen(true)}
-//                 aria-label="open menu"
-//               >
-//                 <MenuIcon />
-//               </IconButton>
-
-//               <Link href="/" aria-label="Home">
-//                 <Image
-//                   src="/logo.png"
-//                   alt="ShopMate Logo"
-//                   width={48}
-//                   height={48}
-//                   priority
-//                   style={{ borderRadius: "50%" }}
-//                 />
-//               </Link>
-//             </Box>
-
-//             {/* Center: Search (desktop) */}
-//             <Box sx={{ flex: 1, px: 4, display: { xs: "none", md: "block" } }}>
-//               <Search placeholder="Search products..." />
-//             </Box>
-
-//             {/* Right: Actions */}
-//             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-//               <IconButton aria-label="favorites">
-//                 <FavoriteBorderIcon />
-//               </IconButton>
-
-//               <CartButton />
-
-//               {session ? (
-//                 <UserDropdown user={session.user} />
-//               ) : (
-//                 <Button
-//                   component={Link}
-//                   href="/signin"
-//                   size="small"
-//                   sx={{ textTransform: "none" }}
-//                 >
-//                   Sign in
-//                 </Button>
-//               )}
-//             </Box>
-//           </Toolbar>
-//         </Container>
-
-//         {/* Categories */}
-//         <CategoriesBanner categories={categories} />
-//       </AppBar>
-
-//       {/* Mobile Drawer */}
-//       <Drawer
-//         anchor="left"
-//         open={menuOpen}
-//         onClose={() => setMenuOpen(false)}
-//       >
-//         <Box sx={{ width: 280, p: 2 }}>
-//           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-//             <Image
-//               src="/logo.png"
-//               alt="ShopMate Logo"
-//               width={40}
-//               height={40}
-//               style={{ borderRadius: "50%" }}
-//             />
-//             <IconButton onClick={() => setMenuOpen(false)}>
-//               <CloseIcon />
-//             </IconButton>
-//           </Box>
-
-//           <Box sx={{ mt: 2 }}>
-//             <Search placeholder="Search products..." />
-//           </Box>
-//         </Box>
-//       </Drawer>
-
-//       {/* Spacer for fixed AppBar */}
-//       <Toolbar />
-//     </>
-//   );
-// }

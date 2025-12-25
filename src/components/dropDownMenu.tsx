@@ -39,7 +39,7 @@ export default function UserDropdown({ user }: { user: User }) {
               height={32}
               className="rounded-full object-cover"
             />
-            <h6 className="capitalize tracking-tight">{user.name}</h6>
+            {/* <h6 className="capitalize tracking-tight">{user.name}</h6> */}
           </div>
         ) : (
           <FaUser size={18} className="text-blue-400" />
@@ -48,9 +48,8 @@ export default function UserDropdown({ user }: { user: User }) {
 
       {open && (
         <div
-          className={`absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50 transition-all duration-200 ease-out scale-95 opacity-0 ${
-            open ? "opacity-100 scale-100" : ""
-          }
+          className={`absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50 transition-all duration-200 ease-out scale-95 opacity-0 ${open ? "opacity-100 scale-100" : ""
+            }
 `}
         >
           <div className="py-2 px-4 text-sm text-gray-800 dark:text-gray-100 border-b dark:border-gray-700">

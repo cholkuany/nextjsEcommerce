@@ -54,19 +54,18 @@ export default function CategoriesBanner({
   };
 
   return (
-    <div className="flex flex-col items-start w-full">
+    <div className="flex flex-col items-center w-full">
       {/* Filters and Sorting Section */}
-      <div className="flex md:flex-row md:items-center justify-between w-full mb-8 gap-4">
-        <Carousel className="flex overflow-x-auto overflow-y-hidden space-x-4 scrollbar-hide">
-          <CarouselContent className="-ml-1 flex gap-2">
+      <div className="flex md:flex-row items-center justify-between w-full mb-8 gap-4  bg-gray-100">
+        <Carousel className="flex overflow-x-auto overflow-y-hidden scrollbar-hide">
+          <CarouselContent className="-ml-1 flex">
             <CarouselItem className="pl-1 flex-none w-auto">
               <button
                 onClick={() => handleCategoryChange("all")}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
-                  selectedCategory === "all"
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                }`}
+                className={`px-2 py-4 text-[1rem] font-bold transition-colors duration-200 ${selectedCategory === "all"
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "text-gray-800 hover:bg-gray-300"
+                  }`}
               >
                 All Products
               </button>
@@ -75,11 +74,10 @@ export default function CategoriesBanner({
               <CarouselItem key={category.id} className="pl-1 flex-none w-auto">
                 <button
                   onClick={() => handleCategoryChange(category.name)}
-                  className={`px-5 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
-                    selectedCategory === category.name
-                      ? "bg-blue-600 text-white shadow-md"
-                      : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                  }`}
+                  className={`px-2 py-4 text-[1rem] font-bold transition-colors duration-200 ${selectedCategory === category.name
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "text-gray-800 hover:bg-gray-300"
+                    }`}
                 >
                   {category.name}
                 </button>
@@ -90,7 +88,7 @@ export default function CategoriesBanner({
           <CarouselNext />
         </Carousel>
         {/* Sort Dropdown  */}
-        <div className="flex items-center md:ml-auto">
+        {/* <div className="flex items-center md:ml-auto">
           <Select onValueChange={(e) => handleSortChange(e)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Sort by price" />
@@ -103,7 +101,7 @@ export default function CategoriesBanner({
               </SelectGroup>
             </SelectContent>
           </Select>
-        </div>
+        </div> */}
       </div>
     </div>
   );
