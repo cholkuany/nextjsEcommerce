@@ -10,15 +10,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectGroup,
+//   SelectItem,
+//   SelectLabel,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 
 export default function CategoriesBanner({
   categories,
@@ -47,11 +47,11 @@ export default function CategoriesBanner({
     router.push(`?${newParams.toString()}`);
   };
 
-  const handleSortChange = (value: string) => {
-    const newParams = new URLSearchParams(searchParams.toString());
-    newParams.set("sort", value);
-    router.push(`?${newParams.toString()}`);
-  };
+  // const handleSortChange = (value: string) => {
+  //   const newParams = new URLSearchParams(searchParams.toString());
+  //   newParams.set("sort", value);
+  //   router.push(`?${newParams.toString()}`);
+  // };
 
   return (
     <div className="flex flex-col items-center w-full">
